@@ -13,8 +13,8 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
 		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
-		B7CBF41B11108E3600B8C1C8 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF41A11108E3500B8C1C8 /* BWToolkitFramework.framework */; };
-		B7CBF42411108E7E00B8C1C8 /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7CBF41A11108E3500B8C1C8 /* BWToolkitFramework.framework */; };
+		B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
+		B7E0FD8D114164850003AB08 /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7CBF42411108E7E00B8C1C8 /* BWToolkitFramework.framework in CopyFiles */,
+				B7E0FD8D114164850003AB08 /* BWToolkitFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,7 +44,7 @@
 		B7CBF33011105F1700B8C1C8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		B7CBF33111105F1700B8C1C8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = /usr/local/lib/libaudioDB.0.0.dylib; sourceTree = "<absolute>"; };
-		B7CBF41A11108E3500B8C1C8 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = ../BWToolkitFramework.framework; sourceTree = SOURCE_ROOT; };
+		B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BWToolkitFramework.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +54,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */,
-				B7CBF41B11108E3600B8C1C8 /* BWToolkitFramework.framework in Frameworks */,
+				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +73,6 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B7CBF41A11108E3500B8C1C8 /* BWToolkitFramework.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -132,6 +131,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -229,6 +229,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -250,6 +251,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

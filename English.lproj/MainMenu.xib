@@ -901,7 +901,7 @@
 			<object class="NSWindowTemplate" id="298235049">
 				<int key="NSWindowStyleMask">17</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{196, 250}, {535, 260}}</string>
+				<string key="NSWindowRect">{{196, 364}, {535, 146}}</string>
 				<int key="NSWTFlags">-1543503872</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -915,7 +915,7 @@
 						<object class="NSMatrix" id="948779024">
 							<reference key="NSNextResponder" ref="108412374"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 134}, {176, 86}}</string>
+							<string key="NSFrame">{{20, 20}, {176, 86}}</string>
 							<reference key="NSSuperview" ref="108412374"/>
 							<bool key="NSEnabled">YES</bool>
 							<int key="NSNumRows">4</int>
@@ -1187,8 +1187,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
 							</object>
-							<int key="NSSelectedRow">2</int>
-							<reference key="NSSelectedCell" ref="853846524"/>
+							<reference key="NSSelectedCell" ref="71088072"/>
 							<reference key="NSBackgroundColor" ref="907238901"/>
 							<reference key="NSCellBackgroundColor" ref="282115067"/>
 							<reference key="NSFont" ref="294883811"/>
@@ -1196,7 +1195,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="NSTextField" id="419880819">
 							<reference key="NSNextResponder" ref="108412374"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 228}, {123, 17}}</string>
+							<string key="NSFrame">{{17, 114}, {123, 17}}</string>
 							<reference key="NSSuperview" ref="108412374"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="207653454">
@@ -1221,7 +1220,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										<bool key="EncodedWithXMLCoder">YES</bool>
 										<object class="NSProgressIndicator" id="143167873">
 											<reference key="NSNextResponder" ref="790617918"/>
-											<int key="NSvFlags">1292</int>
+											<int key="NSvFlags">-2147482356</int>
 											<object class="NSPSMatrix" key="NSDrawMatrix"/>
 											<string key="NSFrame">{{5, 26}, {481, 20}}</string>
 											<reference key="NSSuperview" ref="790617918"/>
@@ -1250,7 +1249,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 									<reference key="NSSuperview" ref="955715704"/>
 								</object>
 							</object>
-							<string key="NSFrame">{{22, 16}, {496, 71}}</string>
+							<string key="NSFrame">{{22, -98}, {496, 71}}</string>
 							<reference key="NSSuperview" ref="108412374"/>
 							<string key="NSOffsets">{0, 0}</string>
 							<object class="NSTextFieldCell" key="NSTitleCell">
@@ -1273,7 +1272,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="NSButton" id="331424260">
 							<reference key="NSNextResponder" ref="108412374"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{329, 126}, {96, 32}}</string>
+							<string key="NSFrame">{{329, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="108412374"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="614327950">
@@ -1293,7 +1292,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="NSButton" id="101359388">
 							<reference key="NSNextResponder" ref="108412374"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{425, 126}, {96, 32}}</string>
+							<string key="NSFrame">{{425, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="108412374"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="171111105">
@@ -1311,7 +1310,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{535, 260}</string>
+					<string key="NSFrameSize">{535, 146}</string>
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 1002}}</string>
@@ -2465,6 +2464,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>747.IBPluginDependency</string>
 					<string>749.IBPluginDependency</string>
 					<string>750.IBPluginDependency</string>
+					<string>755.IBPluginDependency</string>
+					<string>756.IBPluginDependency</string>
 					<string>81.IBEditorWindowLastContentRect</string>
 					<string>81.IBPluginDependency</string>
 					<string>81.ImportedFromIB2</string>
@@ -2528,8 +2529,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{619, 41}, {606, 477}}</string>
-					<string>{{619, 41}, {606, 477}}</string>
+					<string>{{619, -87}, {606, 477}}</string>
+					<string>{{619, -87}, {606, 477}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -2555,8 +2556,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{573, 50}, {535, 260}}</string>
-					<string>{{573, 50}, {535, 260}}</string>
+					<string>{{573, 164}, {535, 146}}</string>
+					<string>{{573, 164}, {535, 146}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{651, 102}, {201, 183}}</string>
@@ -2602,6 +2603,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

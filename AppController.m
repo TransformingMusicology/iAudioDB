@@ -53,7 +53,7 @@
 		// Create new db, and set flags.
 		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
 		audiodb_l2norm(db);
-		audiodb_power(db);
+	//	audiodb_power(db);
 		
 		// Store useful paths.
 		dbName = [[[panel URL] relativePath] retain];
@@ -82,18 +82,21 @@
 		// Tidy any existing references up.
 		if(db)
 		{
+			NSLog(@"Close db");
 			audiodb_close(db);
 		}
 		
 		if(dbFilename)
 		{
+			NSLog(@"Tidy up filenames");
 			[dbFilename release];
 			[dbName release];
 			[plistFilename release];
 		}
 		
 		// Store useful paths.
-		db = audiodb_open([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], O_RDWR);
+		NSLog(@"Open");
+		db = audiodb_open([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 		dbName = [[[panel URL] relativePath] retain];
 		dbFilename = [[panel filename] retain];
 		
@@ -126,8 +129,10 @@
  */
 -(void)updateStatus
 {
+	NSLog(@"Update status");
 	if(db)
 	{
+		NSLog(@"Got a db");
 		adb_status_ptr status = (adb_status_ptr)malloc(sizeof(struct adbstatus));
 		int flags;
 		flags = audiodb_status(db, status);
@@ -136,6 +141,7 @@
 	}
 	else
 	{
+		NSLog(@"No db");
 		[chooseButton setEnabled:NO];
 		[playBothButton setEnabled:FALSE];
 		[playResultButton setEnabled:FALSE];
@@ -191,76 +197,77 @@
 		
 		NSLog(@"Begin import");
 		
+		/*
+		 vamp:vamp-audiodb-plugins:cq:cq
+		 vamp:vamp-audiodb-plugins:chromagram:chroma
+		 vamp:qm-vamp-plugins:qm-mfcc:coefficients
+		 vamp:qm-vamp-plugins:qm-chromagram:chromagram
+		 */
+		
+		
+		// adb_chroma
+		// adb_cq
+		// qm_chroma
+		// qm_mfcc
+		
 		// Work out which extractor to use
 		NSString* extractor = @"chromagram";
 		switch([extractorOptions selectedTag])
 		{
 			case 0:
-				extractor = @"mfcc";
+				extractor = @"adb_chroma";
 				break;
 			case 1:
-				extractor = @"chromagram";
+				extractor = @"adb_cq";
+				break;
+			case 2:
+				extractor = @"qm_chroma";
+				break;
+			case 3:
+				extractor = @"qm_mfcc";
 				break;
 		}
 		
+		
 		for(int i=0; i<[filesToOpen count]; i++)
-		{
-			// First extract powers
-			
-			NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"powers.XXXXXX"];
-			const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
-			char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
-			strcpy(tempFileNameCString, tempFileTemplateCString);
-			mktemp(tempFileNameCString);
-			
-			NSString* powersFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
-			free(tempFileNameCString);
-			
-			NSTask *task = [[NSTask alloc] init];
-			[task setLaunchPath:@"/usr/local/bin/fftExtract2"];
-			NSArray *args = [NSArray arrayWithObjects:@"-P", @"-h", @"11025", @"-w", @"16384", @"-n", @"32768", @"-i", @"1000", [filesToOpen objectAtIndex:i], powersFileName, nil];
-			[task setArguments:args];
-			[task launch];
-			[task waitUntilExit];
-			[task release];
-			
-			// Then features
-			
-			tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
-			tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
-			tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+		{		
+			audiodb_close(db);
+			NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
+			const char* tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+			char* tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
 			strcpy(tempFileNameCString, tempFileTemplateCString);
 			mktemp(tempFileNameCString);
 
 			NSString* featuresFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
 			free(tempFileNameCString);
 			
-			task = [[NSTask alloc] init];
+			NSTask* task = [[NSTask alloc] init];
 			
-			[task setLaunchPath:@"/usr/local/bin/fftExtract2"];
+			[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
 			
-			NSArray *args2;
-			
-			// Choose the args (TODO: This should use sonic annotator eventually)
-			if([extractor isEqualToString:@"chromagram"])
-			{
-				args2 = [NSArray arrayWithObjects:@"-p",@"/Users/moj/planfile",@"-c", @"36", @"-h", @"11025", @"-w", @"16384", @"-n", @"32768", @"-i", @"1000", [filesToOpen objectAtIndex:i], featuresFileName, nil];
-			}
-			else
-			{
-				args2 = [NSArray arrayWithObjects:@"-p",@"/Users/moj/planfile",@"-m", @"13", @"-h", @"11025", @"-w", @"16384", @"-n ", @"32768", @"-i", @"1000", [filesToOpen objectAtIndex:i], featuresFileName, nil];
-			}
-			[task setArguments:args2];
+			NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
+			NSLog(@"Extractor path: %@", extractorPath);
+			NSArray* args;
+			args = [NSArray arrayWithObjects:@"-t", extractorPath, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
+			[task setArguments:args];
 			[task launch];
 			[task waitUntilExit];
 			[task release];
 			
+			NSTask* importTask = [[NSTask alloc] init];
+			[importTask setLaunchPath:@"/usr/local/bin/populate"];
+			args = [NSArray arrayWithObjects:featuresFileName, dbFilename, nil];
+			[importTask setArguments:args];
+			[importTask launch];
+			[importTask waitUntilExit];
+			[importTask release];
+			
 			NSString* val = [[filesToOpen objectAtIndex:i] retain];
 			NSString* key = [[[filesToOpen objectAtIndex:i] lastPathComponent] retain]; 
-			
+		/*	
 			adb_insert_t insert;
 			insert.features = [featuresFileName cStringUsingEncoding:NSUTF8StringEncoding];
-			insert.power = [powersFileName cStringUsingEncoding:NSUTF8StringEncoding];
+		//	insert.power = [powersFileName cStringUsingEncoding:NSUTF8StringEncoding];
 			insert.times = NULL;
 			insert.key = [key cStringUsingEncoding:NSUTF8StringEncoding];
 			
@@ -268,14 +275,16 @@
 			if(audiodb_insert(db, &insert))
 			{
 				// TODO: Show an error message.
-				NSLog(@"Weep: %@ %@ %@", featuresFileName, powersFileName, key);
+				NSLog(@"Weep: %@ %@", featuresFileName, key);
 				continue;
-			}
+			}*/
 			
 			// Update the plist store.
 			[trackMap setValue:val forKey:key];
 			[trackMap writeToFile:plistFilename atomically: YES];
 			
+			
+			db = audiodb_open([dbFilename cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 			[self updateStatus];
 		}
 		
@@ -566,15 +575,16 @@
 		}
 		else
 		{
+			float divisor = (44100/2048);
 			for(int i=0; i<result->nresults; i++)
 			{
 				NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithCapacity:4];
 				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].key] forKey:@"key"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"distance"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"meter"];
-				[dict setValue:[NSNumber numberWithFloat:result->results[i].qpos/4] forKey:@"qpos"];
-				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/4] forKey:@"ipos"];
-				NSLog(@"%s qpos %d ipos %d", result->results[i].key, result->results[i].qpos/4, result->results[i].ipos/4);
+				[dict setValue:[NSNumber numberWithFloat:result->results[i].qpos/divisor] forKey:@"qpos"];
+				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/divisor] forKey:@"ipos"];
+				NSLog(@"%s qpos %d ipos %d", result->results[i].key, result->results[i].qpos/divisor, result->results[i].ipos/divisor);
 				[results addObject: dict];
 			}
 		}
