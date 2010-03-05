@@ -18,10 +18,20 @@
 	// A max of 100 results.
 	results = [[NSMutableArray alloc] initWithCapacity: 100];
 	
-	
 	return self;
 }
 
+- (void)awakeFromNib {
+	[tracksView setTarget:self];
+	[tracksView setDoubleAction:@selector(tableDoubleClick:)];
+}
+
+- (IBAction)tableDoubleClick:(id)sender
+{
+	[self playResult:Nil];
+//	NSLog(@"Table double clicked");
+}
+	
 
 /**
  * Create a new database, given the selected filename.
@@ -379,6 +389,11 @@
 -(IBAction)playResult:(id)sender
 {
 
+	if([tracksView selectedRow] == -1)
+	{
+		return;
+	}
+	
 	NSDictionary* selectedRow = [results objectAtIndex:[tracksView selectedRow]];
 	NSString* value = [selectedRow objectForKey:@"key"];
 	float ipos = [[selectedRow objectForKey:@"ipos"] floatValue];

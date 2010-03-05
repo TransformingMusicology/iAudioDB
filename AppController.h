@@ -71,7 +71,7 @@
 -(IBAction)stopPlay:(id)sender;
 -(IBAction)chooseQuery:(id)sender;
 -(IBAction)selectedChanged:(id)sender;
-
+-(IBAction)tableDoubleClick:(id)sender;
 
 -(void)performQuery;
 -(void)updateStatus;
