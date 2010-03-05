@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="524"/>
-			<integer value="57"/>
 			<integer value="565"/>
+			<integer value="528"/>
+			<integer value="57"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -507,7 +507,7 @@
 											<object class="NSButtonCell" key="NSCell" id="475638353">
 												<int key="NSCellFlags">604110336</int>
 												<int key="NSCellFlags2">134217728</int>
-												<string key="NSContents">Browse</string>
+												<string key="NSContents">Query</string>
 												<reference key="NSSupport" ref="294883811"/>
 												<reference key="NSControlView" ref="989505649"/>
 												<int key="NSButtonFlags">-2038284033</int>
@@ -654,7 +654,6 @@
 															</object>
 															<int key="NSResizingMask">3</int>
 															<bool key="NSIsResizeable">YES</bool>
-															<bool key="NSIsEditable">YES</bool>
 															<reference key="NSTableView" ref="372985267"/>
 															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 																<string key="NSKey">meter</string>
@@ -691,7 +690,6 @@
 															</object>
 															<int key="NSResizingMask">3</int>
 															<bool key="NSIsResizeable">YES</bool>
-															<bool key="NSIsEditable">YES</bool>
 															<reference key="NSTableView" ref="372985267"/>
 															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 																<string key="NSKey">key</string>
@@ -723,7 +721,6 @@
 															</object>
 															<int key="NSResizingMask">3</int>
 															<bool key="NSIsResizeable">YES</bool>
-															<bool key="NSIsEditable">YES</bool>
 															<reference key="NSTableView" ref="372985267"/>
 															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 																<string key="NSKey">qpos</string>
@@ -755,7 +752,6 @@
 															</object>
 															<int key="NSResizingMask">3</int>
 															<bool key="NSIsResizeable">YES</bool>
-															<bool key="NSIsEditable">YES</bool>
 															<reference key="NSTableView" ref="372985267"/>
 															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 																<string key="NSKey">ipos</string>
@@ -787,7 +783,6 @@
 															</object>
 															<int key="NSResizingMask">3</int>
 															<bool key="NSIsResizeable">YES</bool>
-															<bool key="NSIsEditable">YES</bool>
 															<reference key="NSTableView" ref="372985267"/>
 															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 																<string key="NSKey">distance</string>
@@ -1276,9 +1271,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference key="NSSuperview" ref="108412374"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="614327950">
-								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Extract</string>
+								<string key="NSContents">Browse</string>
 								<reference key="NSSupport" ref="294883811"/>
 								<reference key="NSControlView" ref="331424260"/>
 								<int key="NSButtonFlags">-2038284033</int>
@@ -1945,8 +1940,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="419880819"/>
 							<reference ref="955715704"/>
 							<reference ref="948779024"/>
-							<reference ref="331424260"/>
 							<reference ref="101359388"/>
+							<reference ref="331424260"/>
 						</object>
 						<reference key="parent" ref="298235049"/>
 					</object>
@@ -2105,10 +2100,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="846426635"/>
 							<reference ref="446375157"/>
-							<reference ref="989505649"/>
 							<reference ref="482233744"/>
 							<reference ref="313714439"/>
 							<reference ref="988243878"/>
+							<reference ref="989505649"/>
 						</object>
 						<reference key="parent" ref="171712411"/>
 					</object>
@@ -2524,13 +2519,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{639, 285}, {315, 20}}</string>
+					<string>{{71, 285}, {315, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{619, -87}, {606, 477}}</string>
-					<string>{{619, -87}, {606, 477}}</string>
+					<string>{{47, 66}, {606, 477}}</string>
+					<string>{{47, 66}, {606, 477}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -2556,11 +2551,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{573, 164}, {535, 146}}</string>
-					<string>{{573, 164}, {535, 146}}</string>
+					<string>{{9, 164}, {535, 146}}</string>
+					<string>{{9, 164}, {535, 146}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{651, 102}, {201, 183}}</string>
+					<string>{{83, 102}, {201, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{23, 794}, {245, 183}}</string>
