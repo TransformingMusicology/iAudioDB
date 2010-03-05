@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #include <audioDB_API.h>
 
+
 @interface AppController : NSObject {
-	adb_ptr db;
+	adb_t *db;
 	NSModalSession session;
 	
 	NSString* dbName;

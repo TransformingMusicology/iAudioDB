@@ -133,7 +133,7 @@
 	if(db)
 	{
 		NSLog(@"Got a db");
-		adb_status_ptr status = (adb_status_ptr)malloc(sizeof(struct adbstatus));
+		adb_status_t *status = (adb_status_t *)malloc(sizeof(adb_status_t));
 		int flags;
 		flags = audiodb_status(db, status);
 		[statusField setStringValue: [NSString stringWithFormat:@"Database: %@ Dimensions: %d Files: %d", dbName, status->dim, status->numFiles]];
@@ -245,7 +245,7 @@
 			
 			[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
 			
-			NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
+			NSString* extractorPath = [NSString stringWithFormat:@"/Users/mikej/Development/audioDB/examples/iAudioDB/rdf/%@.n3", extractor];
 			NSLog(@"Extractor path: %@", extractorPath);
 			NSArray* args;
 			args = [NSArray arrayWithObjects:@"-t", extractorPath, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
@@ -545,7 +545,6 @@
 	spec->params.npoints = 1;
 	spec->params.ntracks = 100;
 	//spec->refine.radius = 5.0;
-	spec->refine.hopsize = 1;
 //	spec->refine.absolute_threshold = -6;
 //	spec->refine.relative_threshold = 10;
 //	spec->refine.duration_ratio = 0;
@@ -553,7 +552,7 @@
 	spec->refine.flags = 0;
 //	spec->refine.flags |= ADB_REFINE_ABSOLUTE_THRESHOLD;
 //	spec->refine.flags |= ADB_REFINE_RELATIVE_THRESHOLD;
-	spec->refine.flags |= ADB_REFINE_HOP_SIZE;
+//	spec->refine.flags |= ADB_REFINE_HOP_SIZE;
 	//spec->refine.flags |= ADB_REFINE_RADIUS;
 
 	adb_query_results_t *result = (adb_query_results_t *)malloc(sizeof(adb_query_results_t));
@@ -578,13 +577,14 @@
 			float divisor = (44100/2048);
 			for(int i=0; i<result->nresults; i++)
 			{
+				
 				NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithCapacity:4];
-				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].key] forKey:@"key"];
+				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].ikey] forKey:@"key"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"distance"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"meter"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].qpos/divisor] forKey:@"qpos"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/divisor] forKey:@"ipos"];
-				NSLog(@"%s qpos %d ipos %d", result->results[i].key, result->results[i].qpos/divisor, result->results[i].ipos/divisor);
+				NSLog(@"%s qpos %d ipos %d", result->results[i].ikey, result->results[i].qpos/divisor, result->results[i].ipos/divisor);
 				[results addObject: dict];
 			}
 		}
