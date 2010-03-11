@@ -5,8 +5,8 @@
 //  Created by Mike Jewell on 27/01/2010.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-
 #import "AppController.h"
+
 
 
 @implementation AppController
@@ -95,19 +95,7 @@
 		int numtracks = [maxTracksField intValue];
 		int datasize = ceil((numtracks * vectors * dim * 8) / 1024 / 1024); // In MB
 		
-		// TODO: Refactor this into a 'tidy' method.
-		// Tidy any existing references up.
-		if(db)
-		{
-			audiodb_close(db);
-		}
-		 
-		if(dbFilename)
-		{
-			[dbFilename release];
-			[dbName release];
-			[plistFilename release];
-		}
+		[self reset];
 		 
 		// Create new db, and set flags.
 		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], datasize, numtracks, dim);
@@ -132,6 +120,32 @@
 	}
 }
 
+-(void)reset
+{
+	// Tidy any existing references up.
+	if(db)
+	{
+		NSLog(@"Close db");
+		audiodb_close(db);
+	}
+	
+	if(dbFilename)
+	{
+		NSLog(@"Tidy up filenames");
+		[dbFilename release];
+		[dbName release];
+		[plistFilename release];
+		[trackMap release];
+		[dbState release];
+	}
+	
+	// Reset query flags
+	[queryPath setStringValue: @"No file selected"];
+	[queryLengthSeconds setDoubleValue:0];
+	[queryLengthVectors setDoubleValue:0];
+	[multipleCheckBox setState:NSOnState];
+}
+
 /**
  * Open an existing adb (which must have a plist)
  */
@@ -142,22 +156,7 @@
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		// Tidy any existing references up.
-		if(db)
-		{
-			NSLog(@"Close db");
-			audiodb_close(db);
-		}
-		
-		if(dbFilename)
-		{
-			NSLog(@"Tidy up filenames");
-			[dbFilename release];
-			[dbName release];
-			[plistFilename release];
-			[trackMap release];
-			[dbState release];
-		}
+		[self reset];
 		
 		// Store useful paths.
 		NSLog(@"Open");
@@ -173,7 +172,6 @@
 		[tracksView reloadData];
 		
 		[queryKey setStringValue:@"None Selected"];
-		[self updateStatus];
 		
 		adb_liszt_results_t* liszt_results = audiodb_liszt(db);
 		
@@ -187,8 +185,15 @@
 		dbState = [[[NSMutableDictionary alloc] initWithContentsOfFile:plistFilename] retain];
 		trackMap = [[dbState objectForKey:@"tracks"] retain];
 		
+		[self updateStatus];
+		
 		NSLog(@"Size: %d", [trackMap count]);
 	}
+}
+
+-(IBAction)pathAction:(id)sender
+{
+	NSLog(@"Path action");
 }
 
 /**
@@ -203,13 +208,19 @@
 		adb_status_t *status = (adb_status_t *)malloc(sizeof(adb_status_t));
 		int flags;
 		flags = audiodb_status(db, status);
-		[statusField setStringValue: [NSString stringWithFormat:@"Database: %@ Dimensions: %d Files: %d", dbName, status->dim, status->numFiles]];
-		[chooseButton setEnabled:YES];
+		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Hop: %@ Win: %@ Ext: %@", 
+									  dbName, 
+									  status->dim, 
+									  status->numFiles, 
+									  [dbState objectForKey:@"hopsize"],
+									  [dbState objectForKey:@"windowsize"],
+									  [dbState objectForKey:@"extractor"]]];
+		[performQueryButton setEnabled:YES];
 	}
 	else
 	{
 		NSLog(@"No db");
-		[chooseButton setEnabled:NO];
+		[performQueryButton setEnabled:NO];
 		[playBothButton setEnabled:FALSE];
 		[playResultButton setEnabled:FALSE];
 	}
@@ -240,6 +251,7 @@
 		NSString* extractor = [dbState objectForKey:@"extractor"];
 		NSString* extractorPath = [NSString stringWithFormat:@"/Users/mikej/Development/audioDB/examples/iAudioDB/rdf/%@.n3", extractor];
 		
+		// TODO Shift this process into a separate function.
 		// Create the customized extractor config
 		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
 		NSString* hopStr = [dbState objectForKey:@"hopsize"];
@@ -499,16 +511,24 @@
  */
 -(IBAction)chooseQuery:(id)sender
 {
+	[NSApp beginSheet:querySheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+	session = [NSApp beginModalSessionForWindow:querySheet];
+	[NSApp runModalSession:session];	
+}
+
+
+-(IBAction)selectQueryFile:(id)sender
+{
 	NSArray* fileTypes = [NSArray arrayWithObject:@"wav"];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		NSLog(@"%@", [panel filename]);
-		// Grab key
 		NSArray* opts = [trackMap allKeysForObject:[panel filename]];
 		if([opts count] != 1)
 		{
+			// TODO : Needs fixing!
+			
 			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 			[alert addButtonWithTitle:@"OK"];
 			[alert setMessageText:@"Track not found"];
@@ -520,31 +540,91 @@
 		{
 			selectedKey = [opts objectAtIndex:0];
 			[queryKey setStringValue:selectedKey];
+			[queryPath setStringValue:selectedKey];
 			selectedFilename = [[panel filename] retain];
-			[self performQuery];
+			
+			[self resetLengths:self];
 		}
 	}
+}
+
+-(IBAction)resetLengths:(id)sender
+{
+	queryTrack = [[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES];
+	NSLog(@"%f", [queryTrack duration]);
+	double samples = ([queryTrack duration]*44100);
+	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
+	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
+	
+	[queryLengthSeconds setDoubleValue:ceil([queryTrack duration])];
+	[queryLengthVectors setDoubleValue:ceil((samples-winSize)/hopSize)];
+	
+}
+
+- (void)controlTextDidChange:(NSNotification *)nd
+{
+	NSTextField *ed = [nd object];
+	
+	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
+	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
+	
+	if (ed == queryLengthSeconds)
+	{
+		double secs = [queryLengthSeconds doubleValue];
+		if(secs > 0)
+		{
+			[queryLengthVectors setDoubleValue:ceil(((secs*44100)-winSize)/hopSize)];
+		}
+	}
+	if (ed == queryLengthVectors)
+	{
+		double vectors = [queryLengthVectors doubleValue];
+		if(vectors > 0)
+		{
+			[queryLengthSeconds setDoubleValue:ceil(((hopSize*vectors)+winSize)/44100)];
+		}
+	}
+};
+
+-(IBAction)cancelQuery:(id)sender
+{
+	[NSApp endModalSession:session];
+	[querySheet orderOut:nil];
+	[NSApp endSheet:querySheet];
 }
 
 /**
  * Actually perform the query. TODO: Monolithic.
  */
--(void)performQuery
+-(IBAction)performQuery:(id)sender
 {
+	[NSApp endModalSession:session];
+	[querySheet orderOut:nil];
+	[NSApp endSheet:querySheet];
+	
 	NSLog(@"Perform query! %@, %@", selectedKey, selectedFilename);
 	
 	adb_query_spec_t *spec = (adb_query_spec_t *)malloc(sizeof(adb_query_spec_t));
 	spec->qid.datum = (adb_datum_t *)malloc(sizeof(adb_datum_t));
 	
-	spec->qid.sequence_length = 20;
+	spec->qid.sequence_length = [queryLengthVectors doubleValue];
 	spec->qid.sequence_start = 0;
-	spec->qid.flags = 0;
-	
+	spec->qid.flags = 0;	
 //	spec->qid.flags = spec->qid.flags | ADB_QID_FLAG_EXHAUSTIVE;
+	
 	spec->params.accumulation = ADB_ACCUMULATION_PER_TRACK;
+	
+	if([multipleCheckBox state] == NSOnState)
+	{
+		spec->params.npoints = 10;
+	}
+	else
+	{
+		spec->params.npoints = 1;
+	}
+		
 	spec->params.distance = ADB_DISTANCE_EUCLIDEAN_NORMED;
 	
-	spec->params.npoints = 1;
 	spec->params.ntracks = 100;
 	//spec->refine.radius = 5.0;
 //	spec->refine.absolute_threshold = -6;

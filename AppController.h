@@ -24,19 +24,29 @@
 	IBOutlet NSTableView *tracksView;
 	IBOutlet id mainWindow;
 
-	// Querying
-	IBOutlet NSTextField* queryKey;
+	// Query Customizing
+	
+	IBOutlet NSButton* multipleCheckBox;
+	IBOutlet NSButton* resetButton;
+	IBOutlet NSTextField* queryLengthVectors;
+	IBOutlet NSTextField* queryLengthSeconds;
+	IBOutlet NSTextField* queryPath;
+	
+	// Main window buttons/fields.
+	
+	IBOutlet NSButton* performQueryButton;
 	IBOutlet NSButton* playBothButton;
 	IBOutlet NSButton* playResultButton;
 	IBOutlet NSButton* stopButton;
-	IBOutlet NSButton* chooseButton;
+	IBOutlet NSTextField* queryKey;
 	
-	NSMutableArray* results;
-	NSDictionary* trackMap;
-	NSDictionary* dbState;
+	NSSound* queryTrack;
+	NSSound* resultTrack;
 	
 	// Creating
 	IBOutlet id createSheet;
+	IBOutlet id querySheet;
+	
 	IBOutlet NSMatrix* extractorOptions;
 	IBOutlet NSTextField* windowSizeField;
 	IBOutlet NSTextField* hopSizeField;
@@ -47,9 +57,9 @@
 	IBOutlet id importSheet;
 	IBOutlet NSProgressIndicator* indicator;
 	
-	// Playback
-	NSSound* queryTrack;
-	NSSound* resultTrack;
+	NSMutableArray* results;
+	NSDictionary* trackMap;
+	NSDictionary* dbState;
 	
 	
 	
@@ -73,9 +83,15 @@
 // -(IBAction)cancelImport:(id)sender;
 
 // Create
-
 -(IBAction)cancelCreate:(id)sender;
 -(IBAction)createDatabase:(id)sender;
+
+// Query
+-(IBAction)pathAction:(id)sender;
+-(IBAction)cancelQuery:(id)sender;
+-(IBAction)performQuery:(id)sender;
+-(IBAction)selectQueryFile:(id)sender;
+-(IBAction)resetLengths:(id)sender;
 
 // Buttons
 -(IBAction)playBoth:(id)sender;
@@ -85,7 +101,7 @@
 -(IBAction)selectedChanged:(id)sender;
 -(IBAction)tableDoubleClick:(id)sender;
 
--(void)performQuery;
+-(void)reset;
 -(void)updateStatus;
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem;
 - (void)sound:(NSSound *)sound didFinishPlaying:(BOOL)playbackSuccessful;
