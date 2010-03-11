@@ -4,8 +4,8 @@
 
 :transform a vamp:Transform ;
     vamp:plugin <http://vamp-plugins.org/rdf/plugins/vamp-audiodb-plugins#chromagram> ;
-    vamp:step_size "2048"^^xsd:int ; 
-    vamp:block_size "16384"^^xsd:int ; 
+    vamp:step_size "HOP_SIZE"^^xsd:int ; 
+    vamp:block_size "WINDOW_SIZE"^^xsd:int ; 
     vamp:parameter_binding [
         vamp:parameter [ vamp:identifier "bpo" ] ;
         vamp:value "12"^^xsd:float ;

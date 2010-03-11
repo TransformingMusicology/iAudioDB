@@ -33,16 +33,25 @@
 	
 	NSMutableArray* results;
 	NSDictionary* trackMap;
+	NSDictionary* dbState;
+	
+	// Creating
+	IBOutlet id createSheet;
+	IBOutlet NSMatrix* extractorOptions;
+	IBOutlet NSTextField* windowSizeField;
+	IBOutlet NSTextField* hopSizeField;
+	IBOutlet NSTextField* maxTracksField;
+	IBOutlet NSTextField* maxLengthField;
 	
 	// Extracting
 	IBOutlet id importSheet;
-	IBOutlet NSBox* extractingBox;
-	IBOutlet NSMatrix* extractorOptions;
 	IBOutlet NSProgressIndicator* indicator;
 	
 	// Playback
 	NSSound* queryTrack;
 	NSSound* resultTrack;
+	
+	
 	
 	// Query param fields
 	
@@ -53,17 +62,20 @@
 	 IBOutlet NSTextField* queryLengthField;
 	 IBOutlet NSTextField* queryRadiusField;
 	 IBOutlet NSButtonCell* exhaustiveField;*/
-	
 }
 
 //  Menus
 -(IBAction)newDatabase:(id)sender;
 -(IBAction)openDatabase:(id)sender;
--(IBAction)selectFiles:(id)sender;
 
 // Import
 -(IBAction)importAudio:(id)sender;
--(IBAction)cancelImport:(id)sender;
+// -(IBAction)cancelImport:(id)sender;
+
+// Create
+
+-(IBAction)cancelCreate:(id)sender;
+-(IBAction)createDatabase:(id)sender;
 
 // Buttons
 -(IBAction)playBoth:(id)sender;

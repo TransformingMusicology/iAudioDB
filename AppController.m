@@ -38,42 +38,95 @@
  */
 -(IBAction)newDatabase:(id)sender
 {
+	
+	[NSApp beginSheet:createSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+	session = [NSApp beginModalSessionForWindow:createSheet];
+	[NSApp runModalSession:session];	
+}
+
+/**
+ * Cancel the db creation (at configuration time).
+ */
+-(IBAction)cancelCreate:(id)sender
+{
+	[NSApp endModalSession:session];
+	[createSheet orderOut:nil];
+	[NSApp endSheet:createSheet];
+}
+
+-(IBAction)createDatabase:(id)sender
+{
+	[self cancelCreate:self];
+	
 	NSSavePanel* panel = [NSSavePanel savePanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@""];
-	
+	 
 	[results removeAllObjects];
 	[tracksView reloadData];
-	
+	 
 	if(response == NSFileHandlingPanelOKButton)
 	{
+		// Work out which extractor to use
+		NSString* extractor = @"adb_chroma";
+		// TODO: This should be stored with the n3.
+		int dim;
+		switch([extractorOptions selectedTag])
+		{
+			case 0:
+				extractor = @"adb_chroma";
+				dim = 12;
+				break;
+			case 1:
+				extractor = @"adb_cq";
+				dim = 48;
+				break;
+			case 2:
+				extractor = @"qm_chroma";
+				dim = 12;
+				break;
+			case 3:
+				extractor = @"qm_mfcc";
+				dim = 12;
+				break;
+		}
+		
+		// Calculate the max DB size
+		int vectors = ceil(([maxLengthField doubleValue] * 60) / ([hopSizeField doubleValue] / 44100));
+		int numtracks = [maxTracksField intValue];
+		int datasize = ceil((numtracks * vectors * dim * 8) / 1024 / 1024); // In MB
+		
 		// TODO: Refactor this into a 'tidy' method.
 		// Tidy any existing references up.
 		if(db)
 		{
 			audiodb_close(db);
 		}
-		
+		 
 		if(dbFilename)
 		{
 			[dbFilename release];
 			[dbName release];
 			[plistFilename release];
 		}
-		
+		 
 		// Create new db, and set flags.
-		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
+		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], datasize, numtracks, dim);
 		audiodb_l2norm(db);
-	//	audiodb_power(db);
-		
+			 
 		// Store useful paths.
 		dbName = [[[panel URL] relativePath] retain];
 		dbFilename = [[panel filename] retain];
 		plistFilename = [[NSString stringWithFormat:@"%@.plist", [dbFilename stringByDeletingPathExtension]] retain];
-		
+			
 		// Create the plist file (contains mapping from filename to key).
+		dbState = [[NSMutableDictionary alloc] init];
 		trackMap = [[NSMutableDictionary alloc] init];
-		[trackMap writeToFile:plistFilename atomically:YES];
-		
+		[dbState setValue:trackMap forKey:@"tracks"];
+		[dbState setValue:extractor forKey:@"extractor"];
+		[dbState setValue:[hopSizeField stringValue] forKey:@"hopsize"];
+		[dbState setValue:[windowSizeField stringValue] forKey:@"windowsize"];
+		[dbState writeToFile:plistFilename atomically:YES];
+			 
 		[queryKey setStringValue:@"None Selected"];
 		[self updateStatus];
 	}
@@ -102,6 +155,8 @@
 			[dbFilename release];
 			[dbName release];
 			[plistFilename release];
+			[trackMap release];
+			[dbState release];
 		}
 		
 		// Store useful paths.
@@ -129,7 +184,9 @@
 		}
 		
 		audiodb_liszt_free_results(db, liszt_results);
-		trackMap = [[[NSMutableDictionary alloc] initWithContentsOfFile:plistFilename] retain];
+		dbState = [[[NSMutableDictionary alloc] initWithContentsOfFile:plistFilename] retain];
+		trackMap = [[dbState objectForKey:@"tracks"] retain];
+		
 		NSLog(@"Size: %d", [trackMap count]);
 	}
 }
@@ -159,30 +216,10 @@
 }
 
 /**
- * Get user's import choices.
- */
--(IBAction)importAudio:(id)sender
-{
-	[NSApp beginSheet:importSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
-	session = [NSApp beginModalSessionForWindow: importSheet];
-	[NSApp runModalSession:session];
-}
-
-/**
- * Cancel the import (at configuration time).
- */
--(IBAction)cancelImport:(id)sender;
-{
-	[NSApp endModalSession:session];
-	[importSheet orderOut:nil];
-	[NSApp endSheet:importSheet];
-}
-
-/**
  * Choose the file(s) to be imported.
  * TODO: Currently handles the import process too - split this off.
  */
--(IBAction)selectFiles:(id)sender
+-(IBAction)importAudio:(id)sender
 {
 	[tracksView reloadData];
 	
@@ -192,52 +229,27 @@
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		NSRect newFrame;
-		
-		[extractingBox setHidden:FALSE];
-		newFrame.origin.x = [importSheet frame].origin.x;
-		newFrame.origin.y = [importSheet frame].origin.y - [extractingBox frame].size.height;
-		newFrame.size.width = [importSheet frame].size.width;
-		newFrame.size.height = [importSheet frame].size.height + [extractingBox frame].size.height;
-		
 		[indicator startAnimation:self];
-		[importSheet setFrame:newFrame display:YES animate:YES];
+		
+		[NSApp beginSheet:importSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+		session = [NSApp beginModalSessionForWindow: importSheet];
+		[NSApp runModalSession:session];
 		
 		NSArray *filesToOpen = [panel filenames];
 		
-		NSLog(@"Begin import");
+		NSString* extractor = [dbState objectForKey:@"extractor"];
+		NSString* extractorPath = [NSString stringWithFormat:@"/Users/mikej/Development/audioDB/examples/iAudioDB/rdf/%@.n3", extractor];
 		
-		/*
-		 vamp:vamp-audiodb-plugins:cq:cq
-		 vamp:vamp-audiodb-plugins:chromagram:chroma
-		 vamp:qm-vamp-plugins:qm-mfcc:coefficients
-		 vamp:qm-vamp-plugins:qm-chromagram:chromagram
-		 */
+		// Create the customized extractor config
+		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
+		NSString* hopStr = [dbState objectForKey:@"hopsize"];
+		NSString* winStr = [dbState objectForKey:@"windowsize"];
+		NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
+								stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:winStr];
+		NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
 		
-		
-		// adb_chroma
-		// adb_cq
-		// qm_chroma
-		// qm_mfcc
-		
-		// Work out which extractor to use
-		NSString* extractor = @"chromagram";
-		switch([extractorOptions selectedTag])
-		{
-			case 0:
-				extractor = @"adb_chroma";
-				break;
-			case 1:
-				extractor = @"adb_cq";
-				break;
-			case 2:
-				extractor = @"qm_chroma";
-				break;
-			case 3:
-				extractor = @"qm_mfcc";
-				break;
-		}
-		
+		NSError* error;
+		[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
 		
 		for(int i=0; i<[filesToOpen count]; i++)
 		{		
@@ -254,11 +266,8 @@
 			NSTask* task = [[NSTask alloc] init];
 			
 			[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
-			
-			NSString* extractorPath = [NSString stringWithFormat:@"/Users/mikej/Development/audioDB/examples/iAudioDB/rdf/%@.n3", extractor];
-			NSLog(@"Extractor path: %@", extractorPath);
 			NSArray* args;
-			args = [NSArray arrayWithObjects:@"-t", extractorPath, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
+			args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
 			[task setArguments:args];
 			[task launch];
 			[task waitUntilExit];
@@ -274,42 +283,20 @@
 			
 			NSString* val = [[filesToOpen objectAtIndex:i] retain];
 			NSString* key = [[[filesToOpen objectAtIndex:i] lastPathComponent] retain]; 
-		/*	
-			adb_insert_t insert;
-			insert.features = [featuresFileName cStringUsingEncoding:NSUTF8StringEncoding];
-		//	insert.power = [powersFileName cStringUsingEncoding:NSUTF8StringEncoding];
-			insert.times = NULL;
-			insert.key = [key cStringUsingEncoding:NSUTF8StringEncoding];
-			
-			// Insert into db.
-			if(audiodb_insert(db, &insert))
-			{
-				// TODO: Show an error message.
-				NSLog(@"Weep: %@ %@", featuresFileName, key);
-				continue;
-			}*/
-			
+		
 			// Update the plist store.
 			[trackMap setValue:val forKey:key];
-			[trackMap writeToFile:plistFilename atomically: YES];
+			[dbState writeToFile:plistFilename atomically: YES];
 			
 			
 			db = audiodb_open([dbFilename cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 			[self updateStatus];
 		}
 		
-		newFrame.origin.x = [importSheet frame].origin.x;
-		newFrame.origin.y = [importSheet frame].origin.y + [extractingBox frame].size.height;
-		newFrame.size.width = [importSheet frame].size.width;
-		newFrame.size.height = [importSheet frame].size.height - [extractingBox frame].size.height;
-		
-		[importSheet setFrame:newFrame display:YES animate:YES];
-		
 		[NSApp endModalSession:session];
 		[importSheet orderOut:nil];
 		[NSApp endSheet:importSheet];
 		[indicator stopAnimation:self];
-		[extractingBox setHidden:TRUE];
 	}
 }
 
