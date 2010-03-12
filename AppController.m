@@ -587,9 +587,27 @@
 	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
 	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
 	
+	if(!queryTrack)
+	{
+		queryTrack = [[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES];
+	}
+	
+	double totalDuration = [queryTrack duration];
+	double samples = totalDuration * 44100;
+	double totalVectors = ((samples-winSize)/hopSize);
+	
 	if (ed == queryLengthSeconds)
 	{
 		double secs = [queryLengthSeconds doubleValue];
+		if(secs > totalDuration)
+		{
+			[queryButton setEnabled:NO];
+		}
+		else if(![queryButton isEnabled])
+		{
+			[queryButton setEnabled:YES];
+		}
+		
 		if(secs > 0)
 		{
 			// (samples - windowSize) / hopSize
@@ -600,6 +618,16 @@
 	if (ed == queryLengthVectors)
 	{
 		double vectors = [queryLengthVectors doubleValue];
+		
+		if(vectors > totalVectors)
+		{
+			[queryButton setEnabled:NO];
+		}
+		else if(![queryButton isEnabled])
+		{
+			[queryButton setEnabled:YES];
+		}
+		
 		if(vectors > 0)
 		{
 			[queryLengthSeconds setDoubleValue:ceil(((hopSize*vectors)+winSize)/44100)];
