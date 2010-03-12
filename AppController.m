@@ -449,7 +449,6 @@
 	NSDictionary* selectedRow = [results objectAtIndex:[tracksView selectedRow]];
 	NSString* value = [selectedRow objectForKey:@"key"];
 	float ipos = [[selectedRow objectForKey:@"ipos"] floatValue];
-	float qpos = [[selectedRow objectForKey:@"qpos"] floatValue];
 	NSString* filename = [trackMap objectForKey:value];
 	NSLog(@"Key: %@ Value: %@", value, filename);
 		
@@ -475,7 +474,6 @@
 	
 	// Get query track and shift to start point
 	queryTrack = [[[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES] retain];
-	[queryTrack setCurrentTime:qpos];
 	[queryTrack setDelegate:self];
 	
 	[queryTrack play];
@@ -681,9 +679,7 @@
 				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].ikey] forKey:@"key"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"distance"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"meter"];
-				[dict setValue:[NSNumber numberWithFloat:result->results[i].qpos/divisor] forKey:@"qpos"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/divisor] forKey:@"ipos"];
-				NSLog(@"%s qpos %d ipos %d", result->results[i].ikey, result->results[i].qpos/divisor, result->results[i].ipos/divisor);
 				[results addObject: dict];
 			}
 		}

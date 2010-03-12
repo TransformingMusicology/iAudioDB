@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="524"/>
+			<integer value="528"/>
 			<integer value="793"/>
 			<integer value="779"/>
 			<integer value="57"/>
@@ -699,37 +699,6 @@
 																<string key="NSSelector">compare:</string>
 															</object>
 														</object>
-														<object class="NSTableColumn" id="913401705">
-															<string key="NSIdentifier">qpos</string>
-															<double key="NSWidth">6.800000e+01</double>
-															<double key="NSMinWidth">1.000000e+01</double>
-															<double key="NSMaxWidth">3.402823e+38</double>
-															<object class="NSTableHeaderCell" key="NSHeaderCell">
-																<int key="NSCellFlags">75628032</int>
-																<int key="NSCellFlags2">0</int>
-																<string key="NSContents">QPos</string>
-																<reference key="NSSupport" ref="26"/>
-																<reference key="NSBackgroundColor" ref="751640266"/>
-																<reference key="NSTextColor" ref="953606733"/>
-															</object>
-															<object class="NSTextFieldCell" key="NSDataCell" id="66400504">
-																<int key="NSCellFlags">337772096</int>
-																<int key="NSCellFlags2">2048</int>
-																<string key="NSContents">Text Cell</string>
-																<reference key="NSSupport" ref="294883811"/>
-																<reference key="NSControlView" ref="372985267"/>
-																<reference key="NSBackgroundColor" ref="904458979"/>
-																<reference key="NSTextColor" ref="915193604"/>
-															</object>
-															<int key="NSResizingMask">3</int>
-															<bool key="NSIsResizeable">YES</bool>
-															<reference key="NSTableView" ref="372985267"/>
-															<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
-																<string key="NSKey">qpos</string>
-																<bool key="NSAscending">YES</bool>
-																<string key="NSSelector">compare:</string>
-															</object>
-														</object>
 														<object class="NSTableColumn" id="284178317">
 															<string key="NSIdentifier">ipos</string>
 															<double key="NSWidth">6.300000e+01</double>
@@ -808,14 +777,6 @@
 													<double key="NSRowHeight">1.700000e+01</double>
 													<int key="NSTvFlags">-692060160</int>
 													<int key="NSGridStyleMask">1</int>
-													<object class="NSArray" key="NSSortDescriptors">
-														<bool key="EncodedWithXMLCoder">YES</bool>
-														<object class="NSSortDescriptor">
-															<string key="NSKey">ipos</string>
-															<bool key="NSAscending">NO</bool>
-															<string key="NSSelector">compare:</string>
-														</object>
-													</object>
 													<int key="NSColumnAutoresizingStyle">4</int>
 													<int key="NSDraggingSourceMaskForLocal">15</int>
 													<int key="NSDraggingSourceMaskForNonLocal">0</int>
@@ -2569,27 +2530,12 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="372985267"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="913401705"/>
 							<reference ref="602172838"/>
 							<reference ref="1014311959"/>
 							<reference ref="284178317"/>
 							<reference ref="950838651"/>
 						</object>
 						<reference key="parent" ref="680449350"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">555</int>
-						<reference key="object" ref="913401705"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="66400504"/>
-						</object>
-						<reference key="parent" ref="372985267"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">556</int>
-						<reference key="object" ref="66400504"/>
-						<reference key="parent" ref="913401705"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">552</int>
@@ -3256,8 +3202,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>530.IBPluginDependency</string>
 					<string>552.IBPluginDependency</string>
 					<string>553.IBPluginDependency</string>
-					<string>555.IBPluginDependency</string>
-					<string>556.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
 					<string>564.IBEditorWindowLastContentRect</string>
@@ -3441,8 +3385,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
