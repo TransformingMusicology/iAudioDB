@@ -24,7 +24,9 @@
 - (void)awakeFromNib {
 	[tracksView setTarget:self];
 	[tracksView setDoubleAction:@selector(tableDoubleClick:)];
+	[self updateStatus];
 }
+
 
 - (IBAction)tableDoubleClick:(id)sender
 {
@@ -229,13 +231,16 @@
 									  [dbState objectForKey:@"windowsize"],
 									  [dbState objectForKey:@"extractor"]]];
 		[performQueryButton setEnabled:YES];
+		[importAudioButton setEnabled:YES];
 	}
 	else
 	{
 		NSLog(@"No db");
 		[performQueryButton setEnabled:NO];
+		[importAudioButton setEnabled:NO];
 		[playBothButton setEnabled:NO];
 		[playResultButton setEnabled:NO];
+		[stopButton setEnabled:NO];
 	}
 }
 
@@ -341,6 +346,7 @@
 	id result = [results objectAtIndex:row];
 	id value = [result objectForKey:[tc identifier]];
 	
+	NSLog(@"Result: %s", [tc identifier]);
 	if([[tc identifier] isEqualToString:@"meter"])
 	{
 		NSLevelIndicatorCell *distance = [[NSLevelIndicatorCell alloc] initWithLevelIndicatorStyle:NSRelevancyLevelIndicatorStyle];
@@ -385,13 +391,13 @@
 {
 	if([tracksView numberOfSelectedRows] == 0)
 	{
-		[playBothButton setEnabled:FALSE];
-		[playResultButton setEnabled:FALSE];
+		[playBothButton setEnabled:NO];
+		[playResultButton setEnabled:NO];
 	}
 	else
 	{
-		[playBothButton setEnabled:TRUE];
-		[playResultButton setEnabled:TRUE];
+		[playBothButton setEnabled:YES];
+		[playResultButton setEnabled:YES];
 	}
 }
 
@@ -671,6 +677,7 @@
 		}
 		else
 		{
+			NSLog(@"Populate table: %d", result->nresults);
 			float divisor = (44100/2048);
 			for(int i=0; i<result->nresults; i++)
 			{

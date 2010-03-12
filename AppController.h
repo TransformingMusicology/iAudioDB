@@ -21,7 +21,7 @@
 	NSString* selectedFilename;
 	
 	IBOutlet NSTextField *statusField;
-	IBOutlet NSTableView *tracksView;
+	IBOutlet NSTableView* tracksView;
 	IBOutlet id mainWindow;
 
 	// Query Customizing
@@ -35,10 +35,11 @@
 	
 	// Main window buttons/fields.
 	
-	IBOutlet NSButton* performQueryButton;
-	IBOutlet NSButton* playBothButton;
-	IBOutlet NSButton* playResultButton;
-	IBOutlet NSButton* stopButton;
+	IBOutlet NSToolbarItem* importAudioButton;
+	IBOutlet NSToolbarItem* performQueryButton;
+	IBOutlet NSToolbarItem* playBothButton;
+	IBOutlet NSToolbarItem* playResultButton;
+	IBOutlet NSToolbarItem* stopButton;
 	IBOutlet NSTextField* queryKey;
 	
 	NSSound* queryTrack;
@@ -61,8 +62,6 @@
 	NSMutableArray* results;
 	NSDictionary* trackMap;
 	NSDictionary* dbState;
-	
-	
 	
 	// Query param fields
 	
