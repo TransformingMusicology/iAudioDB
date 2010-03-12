@@ -139,6 +139,19 @@
 		[dbState release];
 	}
 	
+	if(selectedKey)
+	{
+		NSLog(@"Released selected key: %@", selectedKey);
+		[selectedKey release];
+		selectedKey = Nil;
+		NSLog(@"Is now %@", selectedKey);
+	}
+	
+	if(selectedKey)
+	{
+		NSLog(@"Still evals");
+	}
+	
 	// Reset query flags
 	[queryPath setStringValue: @"No file selected"];
 	[queryLengthSeconds setDoubleValue:0];
@@ -221,8 +234,8 @@
 	{
 		NSLog(@"No db");
 		[performQueryButton setEnabled:NO];
-		[playBothButton setEnabled:FALSE];
-		[playResultButton setEnabled:FALSE];
+		[playBothButton setEnabled:NO];
+		[playResultButton setEnabled:NO];
 	}
 }
 
@@ -249,7 +262,7 @@
 		NSArray *filesToOpen = [panel filenames];
 		
 		NSString* extractor = [dbState objectForKey:@"extractor"];
-		NSString* extractorPath = [NSString stringWithFormat:@"/Users/mikej/Development/audioDB/examples/iAudioDB/rdf/%@.n3", extractor];
+		NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
 		
 		// TODO Shift this process into a separate function.
 		// Create the customized extractor config
@@ -511,6 +524,7 @@
  */
 -(IBAction)chooseQuery:(id)sender
 {
+	[queryButton setEnabled:(selectedKey ? YES : NO)];
 	[NSApp beginSheet:querySheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
 	session = [NSApp beginModalSessionForWindow:querySheet];
 	[NSApp runModalSession:session];	
@@ -542,6 +556,7 @@
 			[queryKey setStringValue:selectedKey];
 			[queryPath setStringValue:selectedKey];
 			selectedFilename = [[panel filename] retain];
+			[queryButton setEnabled:YES];
 			
 			[self resetLengths:self];
 		}
@@ -573,6 +588,8 @@
 		double secs = [queryLengthSeconds doubleValue];
 		if(secs > 0)
 		{
+			// (samples - windowSize) / hopSize
+			
 			[queryLengthVectors setDoubleValue:ceil(((secs*44100)-winSize)/hopSize)];
 		}
 	}

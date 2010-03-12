@@ -31,6 +31,7 @@
 	IBOutlet NSTextField* queryLengthVectors;
 	IBOutlet NSTextField* queryLengthSeconds;
 	IBOutlet NSTextField* queryPath;
+	IBOutlet NSButton* queryButton;
 	
 	// Main window buttons/fields.
 	
