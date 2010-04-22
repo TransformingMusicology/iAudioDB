@@ -5,8 +5,8 @@
 //  Created by Mike Jewell on 27/01/2010.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-#import "AppController.h"
 
+#import "AppController.h"
 
 
 @implementation AppController
@@ -18,147 +18,55 @@
 	// A max of 100 results.
 	results = [[NSMutableArray alloc] initWithCapacity: 100];
 	
+	
 	return self;
 }
 
-- (void)awakeFromNib {
-	[tracksView setTarget:self];
-	[tracksView setDoubleAction:@selector(tableDoubleClick:)];
-	[self updateStatus];
-}
-
-
-- (IBAction)tableDoubleClick:(id)sender
-{
-	[self playResult:Nil];
-//	NSLog(@"Table double clicked");
-}
-	
 
 /**
  * Create a new database, given the selected filename.
  */
 -(IBAction)newDatabase:(id)sender
 {
-	
-	[NSApp beginSheet:createSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
-	session = [NSApp beginModalSessionForWindow:createSheet];
-	[NSApp runModalSession:session];	
-}
-
-/**
- * Cancel the db creation (at configuration time).
- */
--(IBAction)cancelCreate:(id)sender
-{
-	[NSApp endModalSession:session];
-	[createSheet orderOut:nil];
-	[NSApp endSheet:createSheet];
-}
-
--(IBAction)createDatabase:(id)sender
-{
-	[self cancelCreate:self];
-	
 	NSSavePanel* panel = [NSSavePanel savePanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@""];
-	 
+	
 	[results removeAllObjects];
 	[tracksView reloadData];
-	 
+	
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		// Work out which extractor to use
-		NSString* extractor = @"adb_chroma";
-		// TODO: This should be stored with the n3.
-		int dim;
-		switch([extractorOptions selectedTag])
+		// TODO: Refactor this into a 'tidy' method.
+		// Tidy any existing references up.
+		if(db)
 		{
-			case 0:
-				extractor = @"adb_chroma";
-				dim = 12;
-				break;
-			case 1:
-				extractor = @"adb_cq";
-				dim = 48;
-				break;
-			case 2:
-				extractor = @"qm_chroma";
-				dim = 12;
-				break;
-			case 3:
-				extractor = @"qm_mfcc";
-				dim = 12;
-				break;
+			audiodb_close(db);
 		}
 		
-		// Calculate the max DB size
-		int vectors = ceil(([maxLengthField doubleValue] * 60) / ([hopSizeField doubleValue] / 44100));
-		int numtracks = [maxTracksField intValue];
-		int datasize = ceil((numtracks * vectors * dim * 8) / 1024 / 1024); // In MB
+		if(dbFilename)
+		{
+			[dbFilename release];
+			[dbName release];
+			[plistFilename release];
+		}
 		
-		[self reset];
-		 
 		// Create new db, and set flags.
-		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], datasize, numtracks, dim);
+		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
 		audiodb_l2norm(db);
-			 
+		audiodb_power(db);
+		
 		// Store useful paths.
 		dbName = [[[panel URL] relativePath] retain];
 		dbFilename = [[panel filename] retain];
 		plistFilename = [[NSString stringWithFormat:@"%@.plist", [dbFilename stringByDeletingPathExtension]] retain];
-			
+		
 		// Create the plist file (contains mapping from filename to key).
-		dbState = [[NSMutableDictionary alloc] init];
 		trackMap = [[NSMutableDictionary alloc] init];
-		[dbState setValue:trackMap forKey:@"tracks"];
-		[dbState setValue:extractor forKey:@"extractor"];
-		[dbState setValue:[hopSizeField stringValue] forKey:@"hopsize"];
-		[dbState setValue:[windowSizeField stringValue] forKey:@"windowsize"];
-		[dbState writeToFile:plistFilename atomically:YES];
-			 
+		[trackMap writeToFile:plistFilename atomically:YES];
+		
 		[queryKey setStringValue:@"None Selected"];
 		[self updateStatus];
 	}
-}
-
--(void)reset
-{
-	// Tidy any existing references up.
-	if(db)
-	{
-		NSLog(@"Close db");
-		audiodb_close(db);
-	}
-	
-	if(dbFilename)
-	{
-		NSLog(@"Tidy up filenames");
-		[dbFilename release];
-		[dbName release];
-		[plistFilename release];
-		[trackMap release];
-		[dbState release];
-	}
-	
-	if(selectedKey)
-	{
-		NSLog(@"Released selected key: %@", selectedKey);
-		[selectedKey release];
-		selectedKey = Nil;
-		NSLog(@"Is now %@", selectedKey);
-	}
-	
-	if(selectedKey)
-	{
-		NSLog(@"Still evals");
-	}
-	
-	// Reset query flags
-	[queryPath setStringValue: @"No file selected"];
-	[queryLengthSeconds setDoubleValue:0];
-	[queryLengthVectors setDoubleValue:0];
-	[multipleCheckBox setState:NSOnState];
 }
 
 /**
@@ -171,11 +79,21 @@
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		[self reset];
+		// Tidy any existing references up.
+		if(db)
+		{
+			audiodb_close(db);
+		}
+		
+		if(dbFilename)
+		{
+			[dbFilename release];
+			[dbName release];
+			[plistFilename release];
+		}
 		
 		// Store useful paths.
-		NSLog(@"Open");
-		db = audiodb_open([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
+		db = audiodb_open([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], O_RDWR);
 		dbName = [[[panel URL] relativePath] retain];
 		dbFilename = [[panel filename] retain];
 		
@@ -187,6 +105,7 @@
 		[tracksView reloadData];
 		
 		[queryKey setStringValue:@"None Selected"];
+		[self updateStatus];
 		
 		adb_liszt_results_t* liszt_results = audiodb_liszt(db);
 		
@@ -197,18 +116,9 @@
 		}
 		
 		audiodb_liszt_free_results(db, liszt_results);
-		dbState = [[[NSMutableDictionary alloc] initWithContentsOfFile:plistFilename] retain];
-		trackMap = [[dbState objectForKey:@"tracks"] retain];
-		
-		[self updateStatus];
-		
+		trackMap = [[[NSMutableDictionary alloc] initWithContentsOfFile:plistFilename] retain];
 		NSLog(@"Size: %d", [trackMap count]);
 	}
-}
-
--(IBAction)pathAction:(id)sender
-{
-	NSLog(@"Path action");
 }
 
 /**
@@ -216,39 +126,47 @@
  */
 -(void)updateStatus
 {
-	NSLog(@"Update status");
 	if(db)
 	{
-		NSLog(@"Got a db");
-		adb_status_t *status = (adb_status_t *)malloc(sizeof(adb_status_t));
+		adb_status_ptr status = (adb_status_ptr)malloc(sizeof(struct adbstatus));
 		int flags;
 		flags = audiodb_status(db, status);
-		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Hop: %@ Win: %@ Ext: %@", 
-									  dbName, 
-									  status->dim, 
-									  status->numFiles, 
-									  [dbState objectForKey:@"hopsize"],
-									  [dbState objectForKey:@"windowsize"],
-									  [dbState objectForKey:@"extractor"]]];
-		[performQueryButton setEnabled:YES];
-		[importAudioButton setEnabled:YES];
+		[statusField setStringValue: [NSString stringWithFormat:@"Database: %@ Dimensions: %d Files: %d", dbName, status->dim, status->numFiles]];
+		[chooseButton setEnabled:YES];
 	}
 	else
 	{
-		NSLog(@"No db");
-		[performQueryButton setEnabled:NO];
-		[importAudioButton setEnabled:NO];
-		[playBothButton setEnabled:NO];
-		[playResultButton setEnabled:NO];
-		[stopButton setEnabled:NO];
+		[chooseButton setEnabled:NO];
+		[playBothButton setEnabled:FALSE];
+		[playResultButton setEnabled:FALSE];
 	}
+}
+
+/**
+ * Get user's import choices.
+ */
+-(IBAction)importAudio:(id)sender
+{
+	[NSApp beginSheet:importSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+	session = [NSApp beginModalSessionForWindow: importSheet];
+	[NSApp runModalSession:session];
+}
+
+/**
+ * Cancel the import (at configuration time).
+ */
+-(IBAction)cancelImport:(id)sender;
+{
+	[NSApp endModalSession:session];
+	[importSheet orderOut:nil];
+	[NSApp endSheet:importSheet];
 }
 
 /**
  * Choose the file(s) to be imported.
  * TODO: Currently handles the import process too - split this off.
  */
--(IBAction)importAudio:(id)sender
+-(IBAction)selectFiles:(id)sender
 {
 	[tracksView reloadData];
 	
@@ -258,75 +176,121 @@
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
-		[indicator startAnimation:self];
+		NSRect newFrame;
 		
-		[NSApp beginSheet:importSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
-		session = [NSApp beginModalSessionForWindow: importSheet];
-		[NSApp runModalSession:session];
+		[extractingBox setHidden:FALSE];
+		newFrame.origin.x = [importSheet frame].origin.x;
+		newFrame.origin.y = [importSheet frame].origin.y - [extractingBox frame].size.height;
+		newFrame.size.width = [importSheet frame].size.width;
+		newFrame.size.height = [importSheet frame].size.height + [extractingBox frame].size.height;
+		
+		[indicator startAnimation:self];
+		[importSheet setFrame:newFrame display:YES animate:YES];
 		
 		NSArray *filesToOpen = [panel filenames];
 		
-		NSString* extractor = [dbState objectForKey:@"extractor"];
-		NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
+		NSLog(@"Begin import");
 		
-		// TODO Shift this process into a separate function.
-		// Create the customized extractor config
-		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
-		NSString* hopStr = [dbState objectForKey:@"hopsize"];
-		NSString* winStr = [dbState objectForKey:@"windowsize"];
-		NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
-								stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:winStr];
-		NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
-		
-		NSError* error;
-		[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
+		// Work out which extractor to use
+		NSString* extractor = @"chromagram";
+		switch([extractorOptions selectedTag])
+		{
+			case 0:
+				extractor = @"mfcc";
+				break;
+			case 1:
+				extractor = @"chromagram";
+				break;
+		}
 		
 		for(int i=0; i<[filesToOpen count]; i++)
-		{		
-			audiodb_close(db);
-			NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
-			const char* tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
-			char* tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+		{
+			// First extract powers
+			
+			NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"powers.XXXXXX"];
+			const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+			char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+			strcpy(tempFileNameCString, tempFileTemplateCString);
+			mktemp(tempFileNameCString);
+			
+			NSString* powersFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
+			free(tempFileNameCString);
+			
+			NSTask *task = [[NSTask alloc] init];
+			[task setLaunchPath:@"/usr/local/bin/fftExtract"];
+			NSArray *args = [NSArray arrayWithObjects:@"-P", @"-s", @"250", [filesToOpen objectAtIndex:i], powersFileName, nil];
+			[task setArguments:args];
+			[task launch];
+			[task waitUntilExit];
+			[task release];
+			
+			// Then features
+			
+			tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
+			tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+			tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
 			strcpy(tempFileNameCString, tempFileTemplateCString);
 			mktemp(tempFileNameCString);
 
 			NSString* featuresFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
 			free(tempFileNameCString);
 			
-			NSTask* task = [[NSTask alloc] init];
+			task = [[NSTask alloc] init];
 			
-			[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
-			NSArray* args;
-			args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
-			[task setArguments:args];
+			[task setLaunchPath:@"/usr/local/bin/fftExtract"];
+			
+			NSArray *args2;
+			
+			// Choose the args (TODO: This should use sonic annotator eventually)
+			if([extractor isEqualToString:@"chromagram"])
+			{
+				args2 = [NSArray arrayWithObjects:@"-p",@"/Users/mikej/planfile",@"-c", @"12", @"-s", @"250", [filesToOpen objectAtIndex:i], featuresFileName, nil];
+			}
+			else
+			{
+				args2 = [NSArray arrayWithObjects:@"-p",@"/Users/mikej/planfile",@"-m", @"13", @"-s", @"250", [filesToOpen objectAtIndex:i], featuresFileName, nil];
+			}
+			[task setArguments:args2];
 			[task launch];
 			[task waitUntilExit];
 			[task release];
 			
-			NSTask* importTask = [[NSTask alloc] init];
-			[importTask setLaunchPath:@"/usr/local/bin/populate"];
-			args = [NSArray arrayWithObjects:featuresFileName, dbFilename, nil];
-			[importTask setArguments:args];
-			[importTask launch];
-			[importTask waitUntilExit];
-			[importTask release];
-			
 			NSString* val = [[filesToOpen objectAtIndex:i] retain];
 			NSString* key = [[[filesToOpen objectAtIndex:i] lastPathComponent] retain]; 
-		
+			
+			adb_insert_t insert;
+			insert.features = [featuresFileName cStringUsingEncoding:NSUTF8StringEncoding];
+			insert.power = [powersFileName cStringUsingEncoding:NSUTF8StringEncoding];
+			insert.times = NULL;
+			insert.key = [key cStringUsingEncoding:NSUTF8StringEncoding];
+			
+			// Insert into db.
+			if(audiodb_insert(db, &insert))
+			{
+				// TODO: Show an error message.
+				NSLog(@"Weep: %@ %@ %@", featuresFileName, powersFileName, key);
+				continue;
+			}
+			
 			// Update the plist store.
 			[trackMap setValue:val forKey:key];
-			[dbState writeToFile:plistFilename atomically: YES];
+			[trackMap writeToFile:plistFilename atomically: YES];
 			
-			
-			db = audiodb_open([dbFilename cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 			[self updateStatus];
 		}
+		
+		newFrame.origin.x = [importSheet frame].origin.x;
+		newFrame.origin.y = [importSheet frame].origin.y + [extractingBox frame].size.height;
+		newFrame.size.width = [importSheet frame].size.width;
+		newFrame.size.height = [importSheet frame].size.height - [extractingBox frame].size.height;
+		
+		[importSheet setFrame:newFrame display:YES animate:YES];
 		
 		[NSApp endModalSession:session];
 		[importSheet orderOut:nil];
 		[NSApp endSheet:importSheet];
 		[indicator stopAnimation:self];
+		[extractingBox setHidden:TRUE];
 	}
 }
 
@@ -346,7 +310,6 @@
 	id result = [results objectAtIndex:row];
 	id value = [result objectForKey:[tc identifier]];
 	
-	NSLog(@"Result: %s", [tc identifier]);
 	if([[tc identifier] isEqualToString:@"meter"])
 	{
 		NSLevelIndicatorCell *distance = [[NSLevelIndicatorCell alloc] initWithLevelIndicatorStyle:NSRelevancyLevelIndicatorStyle];
@@ -391,13 +354,13 @@
 {
 	if([tracksView numberOfSelectedRows] == 0)
 	{
-		[playBothButton setEnabled:NO];
-		[playResultButton setEnabled:NO];
+		[playBothButton setEnabled:FALSE];
+		[playResultButton setEnabled:FALSE];
 	}
 	else
 	{
-		[playBothButton setEnabled:YES];
-		[playResultButton setEnabled:YES];
+		[playBothButton setEnabled:TRUE];
+		[playResultButton setEnabled:TRUE];
 	}
 }
 
@@ -407,11 +370,6 @@
 -(IBAction)playResult:(id)sender
 {
 
-	if([tracksView selectedRow] == -1)
-	{
-		return;
-	}
-	
 	NSDictionary* selectedRow = [results objectAtIndex:[tracksView selectedRow]];
 	NSString* value = [selectedRow objectForKey:@"key"];
 	float ipos = [[selectedRow objectForKey:@"ipos"] floatValue];
@@ -455,6 +413,7 @@
 	NSDictionary* selectedRow = [results objectAtIndex:[tracksView selectedRow]];
 	NSString* value = [selectedRow objectForKey:@"key"];
 	float ipos = [[selectedRow objectForKey:@"ipos"] floatValue];
+	float qpos = [[selectedRow objectForKey:@"qpos"] floatValue];
 	NSString* filename = [trackMap objectForKey:value];
 	NSLog(@"Key: %@ Value: %@", value, filename);
 		
@@ -480,6 +439,7 @@
 	
 	// Get query track and shift to start point
 	queryTrack = [[[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES] retain];
+	[queryTrack setCurrentTime:qpos];
 	[queryTrack setDelegate:self];
 	
 	[queryTrack play];
@@ -528,25 +488,16 @@
  */
 -(IBAction)chooseQuery:(id)sender
 {
-	[queryButton setEnabled:(selectedKey ? YES : NO)];
-	[NSApp beginSheet:querySheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
-	session = [NSApp beginModalSessionForWindow:querySheet];
-	[NSApp runModalSession:session];	
-}
-
-
--(IBAction)selectQueryFile:(id)sender
-{
 	NSArray* fileTypes = [NSArray arrayWithObject:@"wav"];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
 	{
+		NSLog(@"%@", [panel filename]);
+		// Grab key
 		NSArray* opts = [trackMap allKeysForObject:[panel filename]];
 		if([opts count] != 1)
 		{
-			// TODO : Needs fixing!
-			
 			NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 			[alert addButtonWithTitle:@"OK"];
 			[alert setMessageText:@"Track not found"];
@@ -558,124 +509,34 @@
 		{
 			selectedKey = [opts objectAtIndex:0];
 			[queryKey setStringValue:selectedKey];
-			[queryPath setStringValue:selectedKey];
 			selectedFilename = [[panel filename] retain];
-			[queryButton setEnabled:YES];
-			
-			[self resetLengths:self];
+			[self performQuery];
 		}
 	}
-}
-
--(IBAction)resetLengths:(id)sender
-{
-	queryTrack = [[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES];
-	NSLog(@"%f", [queryTrack duration]);
-	double samples = ([queryTrack duration]*44100);
-	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
-	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
-	
-	[queryLengthSeconds setDoubleValue:ceil([queryTrack duration])];
-	[queryLengthVectors setDoubleValue:ceil((samples-winSize)/hopSize)];
-	
-}
-
-- (void)controlTextDidChange:(NSNotification *)nd
-{
-	NSTextField *ed = [nd object];
-	
-	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
-	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
-	
-	if(!queryTrack)
-	{
-		queryTrack = [[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES];
-	}
-	
-	double totalDuration = [queryTrack duration];
-	double samples = totalDuration * 44100;
-	double totalVectors = ((samples-winSize)/hopSize);
-	
-	if (ed == queryLengthSeconds)
-	{
-		double secs = [queryLengthSeconds doubleValue];
-		if(secs > totalDuration)
-		{
-			[queryButton setEnabled:NO];
-		}
-		else if(![queryButton isEnabled])
-		{
-			[queryButton setEnabled:YES];
-		}
-		
-		if(secs > 0)
-		{
-			// (samples - windowSize) / hopSize
-			
-			[queryLengthVectors setDoubleValue:ceil(((secs*44100)-winSize)/hopSize)];
-		}
-	}
-	if (ed == queryLengthVectors)
-	{
-		double vectors = [queryLengthVectors doubleValue];
-		
-		if(vectors > totalVectors)
-		{
-			[queryButton setEnabled:NO];
-		}
-		else if(![queryButton isEnabled])
-		{
-			[queryButton setEnabled:YES];
-		}
-		
-		if(vectors > 0)
-		{
-			[queryLengthSeconds setDoubleValue:ceil(((hopSize*vectors)+winSize)/44100)];
-		}
-	}
-};
-
--(IBAction)cancelQuery:(id)sender
-{
-	[NSApp endModalSession:session];
-	[querySheet orderOut:nil];
-	[NSApp endSheet:querySheet];
 }
 
 /**
  * Actually perform the query. TODO: Monolithic.
  */
--(IBAction)performQuery:(id)sender
+-(void)performQuery
 {
-	[NSApp endModalSession:session];
-	[querySheet orderOut:nil];
-	[NSApp endSheet:querySheet];
-	
 	NSLog(@"Perform query! %@, %@", selectedKey, selectedFilename);
 	
 	adb_query_spec_t *spec = (adb_query_spec_t *)malloc(sizeof(adb_query_spec_t));
 	spec->qid.datum = (adb_datum_t *)malloc(sizeof(adb_datum_t));
 	
-	spec->qid.sequence_length = [queryLengthVectors doubleValue];
+	spec->qid.sequence_length = 20;
 	spec->qid.sequence_start = 0;
-	spec->qid.flags = 0;	
+	spec->qid.flags = 0;
+	
 //	spec->qid.flags = spec->qid.flags | ADB_QID_FLAG_EXHAUSTIVE;
-	
 	spec->params.accumulation = ADB_ACCUMULATION_PER_TRACK;
-	
-	if([multipleCheckBox state] == NSOnState)
-	{
-		spec->params.npoints = 10;
-	}
-	else
-	{
-		spec->params.npoints = 1;
-	}
-		
 	spec->params.distance = ADB_DISTANCE_EUCLIDEAN_NORMED;
 	
+	spec->params.npoints = 1;
 	spec->params.ntracks = 100;
-	//spec->refine.radius = 5.0;
+	spec->refine.radius = 5.0;
+	spec->refine.hopsize = 1;
 //	spec->refine.absolute_threshold = -6;
 //	spec->refine.relative_threshold = 10;
 //	spec->refine.duration_ratio = 0;
@@ -683,8 +544,8 @@
 	spec->refine.flags = 0;
 //	spec->refine.flags |= ADB_REFINE_ABSOLUTE_THRESHOLD;
 //	spec->refine.flags |= ADB_REFINE_RELATIVE_THRESHOLD;
-//	spec->refine.flags |= ADB_REFINE_HOP_SIZE;
-	//spec->refine.flags |= ADB_REFINE_RADIUS;
+	spec->refine.flags |= ADB_REFINE_HOP_SIZE;
+	spec->refine.flags |= ADB_REFINE_RADIUS;
 
 	adb_query_results_t *result = (adb_query_results_t *)malloc(sizeof(adb_query_results_t));
 	spec->qid.datum->data = NULL;
@@ -705,16 +566,15 @@
 		}
 		else
 		{
-			NSLog(@"Populate table: %d", result->nresults);
-			float divisor = (44100/2048);
 			for(int i=0; i<result->nresults; i++)
 			{
-				
 				NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithCapacity:4];
-				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].ikey] forKey:@"key"];
+				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].key] forKey:@"key"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"distance"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"meter"];
-				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/divisor] forKey:@"ipos"];
+				[dict setValue:[NSNumber numberWithFloat:result->results[i].qpos/4] forKey:@"qpos"];
+				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/4] forKey:@"ipos"];
+				NSLog(@"%s qpos %d ipos %d", result->results[i].key, result->results[i].qpos/4, result->results[i].ipos/4);
 				[results addObject: dict];
 			}
 		}
