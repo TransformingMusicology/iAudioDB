@@ -11,14 +11,15 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		B798CFD3114A70DC00026712 /* Add.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B798CFCF114A70DB00026712 /* Add.tiff */; };
-		B798CFD4114A70DC00026712 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B798CFD0114A70DB00026712 /* Play.tiff */; };
-		B798CFD5114A70DC00026712 /* Spotlight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B798CFD1114A70DB00026712 /* Spotlight.tiff */; };
-		B798CFD6114A70DC00026712 /* Stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B798CFD2114A70DB00026712 /* Stop.tiff */; };
+		B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */; };
+		B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */; };
+		B7000BFA1180B06800C3DAEC /* Add.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF61180B06800C3DAEC /* Add.tiff */; };
+		B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF71180B06800C3DAEC /* Play.tiff */; };
+		B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF81180B06800C3DAEC /* Spotlight.tiff */; };
+		B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF91180B06800C3DAEC /* Stop.tiff */; };
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
 		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
 		B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
-		B7E0FD8D114164850003AB08 /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,7 +29,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7E0FD8D114164850003AB08 /* BWToolkitFramework.framework in CopyFiles */,
+				B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,10 +46,11 @@
 		32CA4F630368D1EE00C91783 /* iAudioDB_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iAudioDB_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iAudioDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iAudioDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B798CFCF114A70DB00026712 /* Add.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Add.tiff; path = ../../../../Downloads/devicons/Add.tiff; sourceTree = SOURCE_ROOT; };
-		B798CFD0114A70DB00026712 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = ../../../../Downloads/devicons/Play.tiff; sourceTree = SOURCE_ROOT; };
-		B798CFD1114A70DB00026712 /* Spotlight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Spotlight.tiff; path = ../../../../Downloads/devicons/Spotlight.tiff; sourceTree = SOURCE_ROOT; };
-		B798CFD2114A70DB00026712 /* Stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Stop.tiff; path = ../../../../Downloads/devicons/Stop.tiff; sourceTree = SOURCE_ROOT; };
+		B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BWToolkitFramework.framework; sourceTree = "<group>"; };
+		B7000BF61180B06800C3DAEC /* Add.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Add.tiff; sourceTree = "<group>"; };
+		B7000BF71180B06800C3DAEC /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Play.tiff; sourceTree = "<group>"; };
+		B7000BF81180B06800C3DAEC /* Spotlight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Spotlight.tiff; sourceTree = "<group>"; };
+		B7000BF91180B06800C3DAEC /* Stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Stop.tiff; sourceTree = "<group>"; };
 		B7CBF33011105F1700B8C1C8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		B7CBF33111105F1700B8C1C8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = /usr/local/lib/libaudioDB.0.0.dylib; sourceTree = "<absolute>"; };
@@ -63,6 +65,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */,
 				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
+				B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +110,7 @@
 		29B97314FDCFA39411CA2CEA /* iAudioDB */ = {
 			isa = PBXGroup;
 			children = (
+				B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */,
 				B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -129,10 +133,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B798CFCF114A70DB00026712 /* Add.tiff */,
-				B798CFD0114A70DB00026712 /* Play.tiff */,
-				B798CFD1114A70DB00026712 /* Spotlight.tiff */,
-				B798CFD2114A70DB00026712 /* Stop.tiff */,
+				B7000BF51180B06800C3DAEC /* icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
@@ -148,6 +149,17 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7000BF51180B06800C3DAEC /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				B7000BF61180B06800C3DAEC /* Add.tiff */,
+				B7000BF71180B06800C3DAEC /* Play.tiff */,
+				B7000BF81180B06800C3DAEC /* Spotlight.tiff */,
+				B7000BF91180B06800C3DAEC /* Stop.tiff */,
+			);
+			path = icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,10 +208,10 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				B798CFD3114A70DC00026712 /* Add.tiff in Resources */,
-				B798CFD4114A70DC00026712 /* Play.tiff in Resources */,
-				B798CFD5114A70DC00026712 /* Spotlight.tiff in Resources */,
-				B798CFD6114A70DC00026712 /* Stop.tiff in Resources */,
+				B7000BFA1180B06800C3DAEC /* Add.tiff in Resources */,
+				B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */,
+				B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */,
+				B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
