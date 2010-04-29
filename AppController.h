@@ -52,7 +52,6 @@
 	IBOutlet id querySheet;
 	
 	IBOutlet NSMatrix* extractorOptions;
-	IBOutlet NSTextField* windowSizeField;
 	IBOutlet NSTextField* hopSizeField;
 	IBOutlet NSTextField* maxTracksField;
 	IBOutlet NSTextField* maxLengthField;
@@ -64,16 +63,6 @@
 	NSMutableArray* results;
 	NSDictionary* trackMap;
 	NSDictionary* dbState;
-	
-	// Query param fields
-	
-	/* To Come
-	 IBOutlet id queryType;	
-	 IBOutlet NSTextField* queryStartField;
-	 IBOutlet id queryTypeOptions;
-	 IBOutlet NSTextField* queryLengthField;
-	 IBOutlet NSTextField* queryRadiusField;
-	 IBOutlet NSButtonCell* exhaustiveField;*/
 }
 
 //  Menus
@@ -105,7 +94,8 @@
 
 -(void)reset;
 -(void)updateStatus;
-- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem;
-- (void)sound:(NSSound *)sound didFinishPlaying:(BOOL)playbackSuccessful;
+-(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem;
+-(void)sound:(NSSound *)sound didFinishPlaying:(BOOL)playbackSuccessful;
+-(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath;
 
 @end

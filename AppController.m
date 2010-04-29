@@ -114,7 +114,6 @@
 		[dbState setValue:trackMap forKey:@"tracks"];
 		[dbState setValue:extractor forKey:@"extractor"];
 		[dbState setValue:[hopSizeField stringValue] forKey:@"hopsize"];
-		[dbState setValue:[windowSizeField stringValue] forKey:@"windowsize"];
 		[dbState writeToFile:plistFilename atomically:YES];
 			 
 		[queryKey setStringValue:@"None Selected"];
@@ -143,15 +142,8 @@
 	
 	if(selectedKey)
 	{
-		NSLog(@"Released selected key: %@", selectedKey);
 		[selectedKey release];
 		selectedKey = Nil;
-		NSLog(@"Is now %@", selectedKey);
-	}
-	
-	if(selectedKey)
-	{
-		NSLog(@"Still evals");
 	}
 	
 	// Reset query flags
@@ -232,12 +224,11 @@
 		adb_status_t *status = (adb_status_t *)malloc(sizeof(adb_status_t));
 		int flags;
 		flags = audiodb_status(db, status);
-		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Hop: %@ Win: %@ Ext: %@", 
+		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Hop: %@ Ext: %@", 
 									  dbName, 
 									  status->dim, 
 									  status->numFiles, 
 									  [dbState objectForKey:@"hopsize"],
-									  [dbState objectForKey:@"windowsize"],
 									  [dbState objectForKey:@"extractor"]]];
 		[performQueryButton setEnabled:YES];
 		[importAudioButton setEnabled:YES];
@@ -251,6 +242,59 @@
 		[playResultButton setEnabled:NO];
 		[stopButton setEnabled:NO];
 	}
+}
+
+-(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath
+{
+	// Create the extractor configuration
+	
+	NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
+	NSString* hopStr = [dbState objectForKey:@"hopsize"];
+	NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
+							stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:[NSString stringWithFormat:@"%d", [hopStr intValue] * 8]];
+	NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
+	NSLog(extractorContent);
+	NSLog(newContent);
+	
+	NSError* error;
+	[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
+	
+	// Create the temp file for the extracted features
+	NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
+	const char* tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+	char* tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+	strcpy(tempFileNameCString, tempFileTemplateCString);
+	mktemp(tempFileNameCString);
+	
+	NSString* featuresFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
+	free(tempFileNameCString);
+	
+	// Extract features with sonic-annotator
+	NSTask* task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
+	NSArray* args;
+	args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", filename, nil];
+	[task setArguments:args];
+	[task launch];
+	[task waitUntilExit];
+	[task release];
+	
+	// Populate the audioDB instance
+	NSTask* importTask = [[NSTask alloc] init];
+	[importTask setLaunchPath:@"/usr/local/bin/populate"];
+	args = [NSArray arrayWithObjects:featuresFileName, dbFilename, nil];
+	[importTask setArguments:args];
+	[importTask launch];
+	[importTask waitUntilExit];
+	[importTask release];
+	
+	NSString* val = [filename retain];
+	NSString* key = [[filename lastPathComponent] retain]; 
+	
+	// Update the plist store.
+	[trackMap setValue:val forKey:key];
+	[dbState writeToFile:plistFilename atomically: YES];
+	
 }
 
 /**
@@ -280,7 +324,7 @@
 		
 		// TODO Shift this process into a separate function.
 		// Create the customized extractor config
-		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
+/*		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
 		NSString* hopStr = [dbState objectForKey:@"hopsize"];
 		NSString* winStr = [dbState objectForKey:@"windowsize"];
 		NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
@@ -289,11 +333,16 @@
 		
 		NSError* error;
 		[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
-		
+*/		
 		for(int i=0; i<[filesToOpen count]; i++)
 		{		
 			audiodb_close(db);
-			NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
+			
+			// Get the sample rate for the audio file
+			
+			[self importFile:[filesToOpen objectAtIndex:i] withExtractorConfig:extractorPath];
+			
+	/*		NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
 			const char* tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
 			char* tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
 			strcpy(tempFileNameCString, tempFileTemplateCString);
@@ -326,7 +375,7 @@
 			// Update the plist store.
 			[trackMap setValue:val forKey:key];
 			[dbState writeToFile:plistFilename atomically: YES];
-			
+			*/
 			
 			db = audiodb_open([dbFilename cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 			[self updateStatus];
