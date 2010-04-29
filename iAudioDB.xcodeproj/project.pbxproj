@@ -20,6 +20,7 @@
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
 		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
 		B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
+		B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		B7CBF33111105F1700B8C1C8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = /usr/local/lib/libaudioDB.0.0.dylib; sourceTree = "<absolute>"; };
 		B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BWToolkitFramework.framework; sourceTree = "<group>"; };
+		B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */,
 				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
 				B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */,
+				B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +147,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */,
 				B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,

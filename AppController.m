@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 #import "AppController.h"
-
+#import <AudioToolbox/AudioFile.h>
 
 
 @implementation AppController
@@ -244,17 +244,33 @@
 	}
 }
 
+-(UInt64)getSampleRate:(NSString *)filename
+{
+	AudioFileID audioFile;
+	AudioFileOpenURL((CFURLRef)[NSURL fileURLWithPath:filename], 0x01, 0, &audioFile);
+	
+	UInt32 propertySize;
+	UInt32 propertyIsWritable;
+	AudioFileGetPropertyInfo(audioFile, kAudioFilePropertyDataFormat, &propertySize, &propertyIsWritable);
+	
+	AudioStreamBasicDescription dataFormat;
+	AudioFileGetProperty(audioFile, kAudioFilePropertyDataFormat, &propertySize, &dataFormat);
+	Float64 sampleRate = dataFormat.mSampleRate;
+	AudioFileClose(audioFile);
+	
+	return sampleRate;
+}
+
 -(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath
 {
 	// Create the extractor configuration
+	UInt64 sampleRate = [self getSampleRate:filename];
 	
 	NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
 	NSString* hopStr = [dbState objectForKey:@"hopsize"];
 	NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
 							stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:[NSString stringWithFormat:@"%d", [hopStr intValue] * 8]];
 	NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
-	NSLog(extractorContent);
-	NSLog(newContent);
 	
 	NSError* error;
 	[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];

@@ -97,5 +97,6 @@
 -(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)anItem;
 -(void)sound:(NSSound *)sound didFinishPlaying:(BOOL)playbackSuccessful;
 -(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath;
+-(UInt64)getSampleRate:(NSString *)filename;
 
 @end
