@@ -670,7 +670,7 @@
 	{
 		if(lengthSecs >= 0)
 		{
-			lengthVectors = ceil(((lengthSecs*sampleRate)-winSize)/hopSize);
+			lengthVectors = ceil((((lengthSecs*sampleRate)-winSize)/hopSize)+1);
 			if(lengthVectors < 0) {lengthVectors = 0; }
 			[queryLengthVectors setDoubleValue:lengthVectors];
 		}
@@ -680,7 +680,7 @@
 	{
 		if(lengthVectors >= 0)
 		{
-			lengthSecs = ((hopSize*lengthVectors)+winSize)/sampleRate;
+			lengthSecs = ((hopSize*(lengthVectors-1))+winSize)/sampleRate;
 			if(lengthSecs < 0) { lengthSecs = 0; }
 			[queryLengthSeconds setDoubleValue:lengthSecs];
 		}
@@ -691,7 +691,7 @@
 	{
 		if(startSecs >= 0)
 		{
-			startVectors = ceil(((startSecs*sampleRate)-winSize)/hopSize);
+			startVectors = ceil((startSecs*sampleRate)/hopSize);
 			if(startVectors < 0) { startVectors = 0; }
 			[queryStartVectors setDoubleValue:startVectors];
 		}
@@ -700,7 +700,7 @@
 	{
 		if(startVectors >= 0)
 		{
-			startSecs = ((hopSize*startVectors)+winSize)/sampleRate;
+			startSecs = (hopSize*startVectors)/sampleRate;
 			if(startSecs < 0) { startSecs = 0; }
 			[queryStartSeconds setDoubleValue:startSecs];
 		}
