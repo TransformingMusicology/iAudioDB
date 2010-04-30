@@ -78,22 +78,22 @@
 				extractor = @"adb_chroma";
 				dim = 12;
 				break;
-			case 1:
+	/*		case 1:
 				extractor = @"adb_cq";
 				dim = 48;
 				break;
 			case 2:
 				extractor = @"qm_chroma";
 				dim = 12;
-				break;
-			case 3:
+				break;*/
+			case 1:
 				extractor = @"qm_mfcc";
 				dim = 12;
 				break;
 		}
 		
 		// Calculate the max DB size
-		int vectors = ceil(([maxLengthField doubleValue] * 60.0f) / (([hopSizeField doubleValue] / 1000) * 44100.0f));
+		int vectors = ceil([maxLengthField doubleValue] / (([hopSizeField doubleValue] / 1000) * 44100.0f));
 		NSLog(@"Vectors: %d", vectors);
 		int numtracks = [maxTracksField intValue];
 		int datasize = ceil((numtracks * vectors * dim * 8.0f) / 1024.0f / 1024.0f); // In MB
