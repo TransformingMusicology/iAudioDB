@@ -93,7 +93,8 @@
 		}
 		
 		// Calculate the max DB size
-		int vectors = ceil(([maxLengthField doubleValue] * 60.0f) / ([hopSizeField doubleValue] / 44100.0f));
+		int vectors = ceil(([maxLengthField doubleValue] * 60.0f) / (([hopSizeField doubleValue] / 1000) * 44100.0f));
+		NSLog(@"Vectors: %d", vectors);
 		int numtracks = [maxTracksField intValue];
 		int datasize = ceil((numtracks * vectors * dim * 8.0f) / 1024.0f / 1024.0f); // In MB
 		
@@ -261,17 +262,36 @@
 	return sampleRate;
 }
 
+-(UInt64)getHopSizeInSamples:(NSString *)filename
+{
+	NSString* hopStr = [dbState objectForKey:@"hopsize"];
+	return round([self getSampleRate:filename] * ([hopStr doubleValue] / 1000));
+}
+
+-(int)nearestPow2:(int)x
+{
+    if (x < 0)
+        return 0;
+    --x;
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    return x+1;
+}
+
 -(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath
 {
 	// Create the extractor configuration
-	UInt64 sampleRate = [self getSampleRate:filename];
+	int hopSizeSamples = [self getHopSizeInSamples:filename];
+	int windowSizeSamples = [self nearestPow2:(hopSizeSamples*8)];
 	
 	NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
-	NSString* hopStr = [dbState objectForKey:@"hopsize"];
-	NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
-							stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:[NSString stringWithFormat:@"%d", [hopStr intValue] * 8]];
+	NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:[NSString stringWithFormat:@"%d", hopSizeSamples]] 
+							stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:[NSString stringWithFormat:@"%d", windowSizeSamples]];
 	NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
-	
+	NSLog(newContent);
 	NSError* error;
 	[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
 	
@@ -315,7 +335,6 @@
 
 /**
  * Choose the file(s) to be imported.
- * TODO: Currently handles the import process too - split this off.
  */
 -(IBAction)importAudio:(id)sender
 {
@@ -338,18 +357,6 @@
 		NSString* extractor = [dbState objectForKey:@"extractor"];
 		NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
 		
-		// TODO Shift this process into a separate function.
-		// Create the customized extractor config
-/*		NSString* extractorContent = [NSString stringWithContentsOfFile:extractorPath];
-		NSString* hopStr = [dbState objectForKey:@"hopsize"];
-		NSString* winStr = [dbState objectForKey:@"windowsize"];
-		NSString* newContent = [[extractorContent stringByReplacingOccurrencesOfString:@"HOP_SIZE" withString:hopStr] 
-								stringByReplacingOccurrencesOfString:@"WINDOW_SIZE" withString:winStr];
-		NSString* n3FileName = [NSTemporaryDirectory() stringByAppendingPathComponent:@"extractor_config.n3"];
-		
-		NSError* error;
-		[newContent writeToFile:n3FileName atomically:YES encoding:NSASCIIStringEncoding error:&error];
-*/		
 		for(int i=0; i<[filesToOpen count]; i++)
 		{		
 			audiodb_close(db);
@@ -357,42 +364,6 @@
 			// Get the sample rate for the audio file
 			
 			[self importFile:[filesToOpen objectAtIndex:i] withExtractorConfig:extractorPath];
-			
-	/*		NSString* tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"features.XXXXXX"];
-			const char* tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
-			char* tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
-			strcpy(tempFileNameCString, tempFileTemplateCString);
-			mktemp(tempFileNameCString);
-
-			NSString* featuresFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
-			free(tempFileNameCString);
-			
-			NSTask* task = [[NSTask alloc] init];
-			
-			[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
-			NSArray* args;
-			args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", [filesToOpen objectAtIndex:i], nil];
-			[task setArguments:args];
-			[task launch];
-			[task waitUntilExit];
-			[task release];
-			
-			NSTask* importTask = [[NSTask alloc] init];
-			[importTask setLaunchPath:@"/usr/local/bin/populate"];
-			args = [NSArray arrayWithObjects:featuresFileName, dbFilename, nil];
-			[importTask setArguments:args];
-			[importTask launch];
-			[importTask waitUntilExit];
-			[importTask release];
-			
-			NSString* val = [[filesToOpen objectAtIndex:i] retain];
-			NSString* key = [[[filesToOpen objectAtIndex:i] lastPathComponent] retain]; 
-		
-			// Update the plist store.
-			[trackMap setValue:val forKey:key];
-			[dbState writeToFile:plistFilename atomically: YES];
-			*/
-			
 			db = audiodb_open([dbFilename cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
 			[self updateStatus];
 		}
@@ -648,9 +619,11 @@
 {
 	queryTrack = [[NSSound alloc] initWithContentsOfFile:selectedFilename byReference:YES];
 
-	double samples = ([queryTrack duration]*44100.0f);
-	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
-	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
+	int sampleRate = [self getSampleRate:selectedFilename];
+	int hopSize = [self getHopSizeInSamples:selectedFilename];
+	int winSize = [self nearestPow2:(hopSize*8)];
+	
+	double samples = ([queryTrack duration]*sampleRate);
 	
 	[queryLengthSeconds setDoubleValue:[queryTrack duration]];
 	[queryLengthVectors setDoubleValue:ceil((samples-winSize)/hopSize)];
@@ -665,6 +638,7 @@
 	[queryStartVectors setEnabled:YES];
 	[resetButton setEnabled:YES];
 	[multipleCheckBox setEnabled:YES];
+	[queryButton setEnabled:YES];
 	
 }
 
@@ -672,8 +646,9 @@
 {
 	NSTextField *ed = [nd object];
 	
-	double hopSize = [[dbState objectForKey:@"hopsize"] doubleValue];
-	double winSize = [[dbState objectForKey:@"windowsize"] doubleValue];
+	int sampleRate = [self getSampleRate:selectedFilename];
+	int hopSize = [self getHopSizeInSamples:selectedFilename];
+	int winSize = [self nearestPow2:(hopSize*8)];
 	
 	if(!queryTrack)
 	{
@@ -681,9 +656,10 @@
 	}
 	
 	double totalDuration = [queryTrack duration];
-	double samples = totalDuration * 44100.0f;
+	double samples = totalDuration * sampleRate;
 	double totalVectors = ceil((samples-winSize)/hopSize);
 
+	
 	double lengthSecs = [queryLengthSeconds doubleValue];
 	double startSecs = [queryStartSeconds doubleValue];
 	double lengthVectors = [queryLengthVectors doubleValue];
@@ -694,10 +670,9 @@
 	{
 		if(lengthSecs >= 0)
 		{
-			lengthVectors = ceil(((lengthSecs*44100.0f)-winSize)/hopSize);
+			lengthVectors = ceil(((lengthSecs*sampleRate)-winSize)/hopSize);
 			if(lengthVectors < 0) {lengthVectors = 0; }
 			[queryLengthVectors setDoubleValue:lengthVectors];
-			
 		}
 	}
 	
@@ -705,7 +680,7 @@
 	{
 		if(lengthVectors >= 0)
 		{
-			lengthSecs = ((hopSize*lengthVectors)+winSize)/44100.0f;
+			lengthSecs = ((hopSize*lengthVectors)+winSize)/sampleRate;
 			if(lengthSecs < 0) { lengthSecs = 0; }
 			[queryLengthSeconds setDoubleValue:lengthSecs];
 		}
@@ -716,7 +691,7 @@
 	{
 		if(startSecs >= 0)
 		{
-			startVectors = ceil(((startSecs*44100.0f)-winSize)/hopSize);
+			startVectors = ceil(((startSecs*sampleRate)-winSize)/hopSize);
 			if(startVectors < 0) { startVectors = 0; }
 			[queryStartVectors setDoubleValue:startVectors];
 		}
@@ -725,7 +700,7 @@
 	{
 		if(startVectors >= 0)
 		{
-			startSecs = ((hopSize*startVectors)+winSize)/44100.0f;
+			startSecs = ((hopSize*startVectors)+winSize)/sampleRate;
 			if(startSecs < 0) { startSecs = 0; }
 			[queryStartSeconds setDoubleValue:startSecs];
 		}
@@ -813,10 +788,15 @@
 		}
 		else
 		{
+			
 			NSLog(@"Populate table: %d", result->nresults);
-			float divisor = (44100.0f/hopSize);
 			for(int i=0; i<result->nresults; i++)
 			{
+				
+				NSString* filename = [trackMap objectForKey:[NSString stringWithFormat:@"%s", result->results[i].ikey]];
+				int sampleRate = [self getSampleRate:filename];
+				int hopSize = [self getHopSizeInSamples:filename];
+				float divisor = (sampleRate/hopSize);
 				
 				NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithCapacity:4];
 				[dict setValue:[NSString stringWithFormat:@"%s", result->results[i].ikey] forKey:@"key"];

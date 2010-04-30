@@ -98,5 +98,7 @@
 -(void)sound:(NSSound *)sound didFinishPlaying:(BOOL)playbackSuccessful;
 -(void)importFile:(NSString *)filename withExtractorConfig:(NSString *)extractorPath;
 -(UInt64)getSampleRate:(NSString *)filename;
+-(UInt64)getHopSizeInSamples:(NSString *)filename;
+-(int)nearestPow2:(int)x;
 
 @end
