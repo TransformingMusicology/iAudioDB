@@ -225,7 +225,7 @@
 		adb_status_t *status = (adb_status_t *)malloc(sizeof(adb_status_t));
 		int flags;
 		flags = audiodb_status(db, status);
-		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Hop: %@ Ext: %@", 
+		[statusField setStringValue: [NSString stringWithFormat:@"%@ Dim: %d Files: %d Slice: %@ms Ext: %@", 
 									  dbName, 
 									  status->dim, 
 									  status->numFiles, 
@@ -307,7 +307,10 @@
 	
 	// Extract features with sonic-annotator
 	NSTask* task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/usr/local/bin/sonic-annotator"];
+	
+	NSString* extractPath = [ [ NSBundle mainBundle ] pathForAuxiliaryExecutable: @"sonic-annotator" ];
+	[task setLaunchPath:extractPath];
+	
 	NSArray* args;
 	args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", filename, nil];
 	[task setArguments:args];
@@ -317,7 +320,8 @@
 	
 	// Populate the audioDB instance
 	NSTask* importTask = [[NSTask alloc] init];
-	[importTask setLaunchPath:@"/usr/local/bin/populate"];
+	NSString* importPath = [ [ NSBundle mainBundle ] pathForAuxiliaryExecutable: @"populate" ];
+	[importTask setLaunchPath:importPath];
 	args = [NSArray arrayWithObjects:featuresFileName, dbFilename, nil];
 	[importTask setArguments:args];
 	[importTask launch];
@@ -330,6 +334,7 @@
 	// Update the plist store.
 	[trackMap setValue:val forKey:key];
 	[dbState writeToFile:plistFilename atomically: YES];
+	
 	
 }
 
@@ -355,7 +360,12 @@
 		NSArray *filesToOpen = [panel filenames];
 		
 		NSString* extractor = [dbState objectForKey:@"extractor"];
-		NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
+		
+		NSLog([NSString stringWithFormat:@"rdf/%@.n3", extractor]);
+		NSString* extractorPath = [ [ NSBundle mainBundle ] pathForResource:extractor ofType:@"n3" inDirectory:@"rdf"];
+		NSLog(@"Extractor path: %@", extractorPath);
+		
+//		NSString* extractorPath = [NSString stringWithFormat:@"/Applications/iAudioDB.app/rdf/%@.n3", extractor];
 		
 		for(int i=0; i<[filesToOpen count]; i++)
 		{		

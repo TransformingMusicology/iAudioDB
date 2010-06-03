@@ -12,26 +12,74 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */; };
-		B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */; };
+		B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in Copy BWToolkit Bits */ = {isa = PBXBuildFile; fileRef = B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */; };
 		B7000BFA1180B06800C3DAEC /* Add.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF61180B06800C3DAEC /* Add.tiff */; };
 		B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF71180B06800C3DAEC /* Play.tiff */; };
 		B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF81180B06800C3DAEC /* Spotlight.tiff */; };
 		B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF91180B06800C3DAEC /* Stop.tiff */; };
+		B78FC0BC11AD9B7F0079400F /* sonic-annotator in Copy Executables */ = {isa = PBXBuildFile; fileRef = B78FC0BB11AD9B7F0079400F /* sonic-annotator */; };
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
 		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
 		B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
+		B7E4DD9E11B8027700C787FE /* qm_mfcc.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */; };
+		B7E4DD9F11B8027700C787FE /* adb_cq.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9B11B8027700C787FE /* adb_cq.n3 */; };
+		B7E4DDA011B8027700C787FE /* qm_chroma.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */; };
+		B7E4DDA111B8027700C787FE /* adb_chroma.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */; };
+		B7E4DDA211B8027F00C787FE /* qm_mfcc.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */; };
+		B7E4DDA311B8027F00C787FE /* adb_cq.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9B11B8027700C787FE /* adb_cq.n3 */; };
+		B7E4DDA411B8027F00C787FE /* qm_chroma.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */; };
+		B7E4DDA511B8027F00C787FE /* adb_chroma.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */; };
+		B7F5911D11AD88A20037F299 /* libaudioDB.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
+		B7F5914711AD98D40037F299 /* populate in Copy Executables */ = {isa = PBXBuildFile; fileRef = B7F5914611AD98D40037F299 /* populate */; };
 		B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B7CBF42111108E6100B8C1C8 /* CopyFiles */ = {
+		B7CBF42111108E6100B8C1C8 /* Copy BWToolkit Bits */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in CopyFiles */,
+				B7000BD71180AE3300C3DAEC /* BWToolkitFramework.framework in Copy BWToolkit Bits */,
 			);
+			name = "Copy BWToolkit Bits";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7E4DD9911B801F900C787FE /* Copy rdf */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = rdf;
+			dstSubfolderSpec = 7;
+			files = (
+				B7E4DDA211B8027F00C787FE /* qm_mfcc.n3 in Copy rdf */,
+				B7E4DDA311B8027F00C787FE /* adb_cq.n3 in Copy rdf */,
+				B7E4DDA411B8027F00C787FE /* qm_chroma.n3 in Copy rdf */,
+				B7E4DDA511B8027F00C787FE /* adb_chroma.n3 in Copy rdf */,
+			);
+			name = "Copy rdf";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7F5911F11AD88B20037F299 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B7F5911D11AD88A20037F299 /* libaudioDB.0.0.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7F5914511AD98B20037F299 /* Copy Executables */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				B78FC0BC11AD9B7F0079400F /* sonic-annotator in Copy Executables */,
+				B7F5914711AD98D40037F299 /* populate in Copy Executables */,
+			);
+			name = "Copy Executables";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -52,10 +100,16 @@
 		B7000BF71180B06800C3DAEC /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Play.tiff; sourceTree = "<group>"; };
 		B7000BF81180B06800C3DAEC /* Spotlight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Spotlight.tiff; sourceTree = "<group>"; };
 		B7000BF91180B06800C3DAEC /* Stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Stop.tiff; sourceTree = "<group>"; };
+		B78FC0BB11AD9B7F0079400F /* sonic-annotator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = "sonic-annotator"; path = "binaries/sonic-annotator"; sourceTree = "<group>"; };
 		B7CBF33011105F1700B8C1C8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		B7CBF33111105F1700B8C1C8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = /usr/local/lib/libaudioDB.0.0.dylib; sourceTree = "<absolute>"; };
 		B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BWToolkitFramework.framework; sourceTree = "<group>"; };
+		B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = qm_mfcc.n3; path = rdf/qm_mfcc.n3; sourceTree = "<group>"; };
+		B7E4DD9B11B8027700C787FE /* adb_cq.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = adb_cq.n3; path = rdf/adb_cq.n3; sourceTree = "<group>"; };
+		B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = qm_chroma.n3; path = rdf/qm_chroma.n3; sourceTree = "<group>"; };
+		B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = adb_chroma.n3; path = rdf/adb_chroma.n3; sourceTree = "<group>"; };
+		B7F5914611AD98D40037F299 /* populate */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = populate; sourceTree = "<group>"; };
 		B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -64,10 +118,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */,
-				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
 				B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
 				B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,6 +190,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B7E4DDAD11B8029F00C787FE /* binaries */,
+				B7E4DDAC11B8029300C787FE /* rdf */,
 				B7000BF51180B06800C3DAEC /* icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -166,6 +222,26 @@
 			path = icons;
 			sourceTree = "<group>";
 		};
+		B7E4DDAC11B8029300C787FE /* rdf */ = {
+			isa = PBXGroup;
+			children = (
+				B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */,
+				B7E4DD9B11B8027700C787FE /* adb_cq.n3 */,
+				B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */,
+				B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */,
+			);
+			name = rdf;
+			sourceTree = "<group>";
+		};
+		B7E4DDAD11B8029F00C787FE /* binaries */ = {
+			isa = PBXGroup;
+			children = (
+				B78FC0BB11AD9B7F0079400F /* sonic-annotator */,
+				B7F5914611AD98D40037F299 /* populate */,
+			);
+			name = binaries;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -176,7 +252,10 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				B7CBF42111108E6100B8C1C8 /* CopyFiles */,
+				B7CBF42111108E6100B8C1C8 /* Copy BWToolkit Bits */,
+				B7F5911F11AD88B20037F299 /* CopyFiles */,
+				B7F5914511AD98B20037F299 /* Copy Executables */,
+				B7E4DD9911B801F900C787FE /* Copy rdf */,
 			);
 			buildRules = (
 			);
@@ -216,6 +295,10 @@
 				B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */,
 				B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */,
 				B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */,
+				B7E4DD9E11B8027700C787FE /* qm_mfcc.n3 in Resources */,
+				B7E4DD9F11B8027700C787FE /* adb_cq.n3 in Resources */,
+				B7E4DDA011B8027700C787FE /* qm_chroma.n3 in Resources */,
+				B7E4DDA111B8027700C787FE /* adb_chroma.n3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
