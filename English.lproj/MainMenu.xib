@@ -8,11 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="57"/>
-			<integer value="793"/>
+			<integer value="106"/>
+			<integer value="779"/>
 			<integer value="565"/>
 			<integer value="371"/>
-			<integer value="779"/>
+			<integer value="793"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -46,7 +46,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="694149608">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">iAudioDB</string>
+						<string key="NSTitle">CAMUS</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -60,12 +60,12 @@
 						</object>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="110575045">
-							<string key="NSTitle">iAudioDB</string>
+							<string key="NSTitle">CAMUS</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="238522557">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">About iAudioDB</string>
+									<string key="NSTitle">About CAMUS</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -132,7 +132,7 @@
 								</object>
 								<object class="NSMenuItem" id="755159360">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Hide iAudioDB</string>
+									<string key="NSTitle">Hide CAMUS</string>
 									<string key="NSKeyEquiv">h</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -170,7 +170,7 @@
 								</object>
 								<object class="NSMenuItem" id="632727374">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Quit iAudioDB</string>
+									<string key="NSTitle">Quit CAMUS</string>
 									<string key="NSKeyEquiv">q</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -390,7 +390,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{335, 273}, {606, 477}}</string>
 				<int key="NSWTFlags">1946157056</int>
-				<string key="NSWindowTitle">iAudioDB</string>
+				<string key="NSWindowTitle">CAMUS</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="703229265">
 					<object class="NSMutableString" key="NSToolbarIdentifier">
@@ -3398,7 +3398,7 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1" id="9"/>
-					<string>{{893, 262}, {216, 23}}</string>
+					<string>{{291, 268}, {216, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{596, 852}, {216, 23}}</string>
@@ -3434,17 +3434,17 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{822, 212}, {197, 73}}</string>
+					<string>{{220, 218}, {197, 73}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{71, 285}, {315, 20}}</string>
+					<string>{{52, 291}, {300, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{456, 273}, {606, 477}}</string>
-					<string>{{456, 273}, {606, 477}}</string>
+					<string>{{275, 274}, {606, 477}}</string>
+					<string>{{275, 274}, {606, 477}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -3464,7 +3464,7 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 					<string>{{107, 508}, {322, 320}}</string>
 					<boolean value="NO" id="6"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{83, 102}, {201, 183}}</string>
+					<string>{{64, 108}, {187, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -3480,7 +3480,7 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{778, 152}, {154, 133}}</string>
+					<string>{{176, 158}, {154, 133}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3524,7 +3524,7 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{736, 222}, {169, 63}}</string>
+					<string>{{134, 228}, {169, 63}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{145, 474}, {199, 203}}</string>
@@ -3722,7 +3722,7 @@ YXJ0aWN1bGFybHkgaW50ZXJlc3RlZCBpbiBoYXJtb25pYyByZWxhdGlvbnNoaXBzLg</string>
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../iAudioDB.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../CAMUS.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

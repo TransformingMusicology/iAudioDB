@@ -1,6 +1,6 @@
 //
 //  AppController.h
-//  iAudioDB
+//  CAMUS
 //
 //  Created by Mike Jewell on 27/01/2010.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
