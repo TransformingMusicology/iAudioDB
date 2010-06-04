@@ -17,6 +17,8 @@
 		B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF71180B06800C3DAEC /* Play.tiff */; };
 		B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF81180B06800C3DAEC /* Spotlight.tiff */; };
 		B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF91180B06800C3DAEC /* Stop.tiff */; };
+		B739033611B93E8800F5B75C /* football-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B739033511B93E8800F5B75C /* football-icon.png */; };
+		B739034711B9400100F5B75C /* CAMUS.icns in Resources */ = {isa = PBXBuildFile; fileRef = B739034611B9400100F5B75C /* CAMUS.icns */; };
 		B78FC0BC11AD9B7F0079400F /* sonic-annotator in Copy Executables */ = {isa = PBXBuildFile; fileRef = B78FC0BB11AD9B7F0079400F /* sonic-annotator */; };
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
 		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
@@ -99,6 +101,8 @@
 		B7000BF71180B06800C3DAEC /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Play.tiff; sourceTree = "<group>"; };
 		B7000BF81180B06800C3DAEC /* Spotlight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Spotlight.tiff; sourceTree = "<group>"; };
 		B7000BF91180B06800C3DAEC /* Stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Stop.tiff; sourceTree = "<group>"; };
+		B739033511B93E8800F5B75C /* football-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "football-icon.png"; sourceTree = "<group>"; };
+		B739034611B9400100F5B75C /* CAMUS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = CAMUS.icns; sourceTree = "<group>"; };
 		B754912911B80A0A0004A248 /* CAMUS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMUS_Prefix.pch; sourceTree = "<group>"; };
 		B78FC0BB11AD9B7F0079400F /* sonic-annotator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = "sonic-annotator"; path = "binaries/sonic-annotator"; sourceTree = "<group>"; };
 		B7CBF33011105F1700B8C1C8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -214,6 +218,8 @@
 		B7000BF51180B06800C3DAEC /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				B739034611B9400100F5B75C /* CAMUS.icns */,
+				B739033511B93E8800F5B75C /* football-icon.png */,
 				B7000BF61180B06800C3DAEC /* Add.tiff */,
 				B7000BF71180B06800C3DAEC /* Play.tiff */,
 				B7000BF81180B06800C3DAEC /* Spotlight.tiff */,
@@ -299,6 +305,8 @@
 				B7E4DD9F11B8027700C787FE /* adb_cq.n3 in Resources */,
 				B7E4DDA011B8027700C787FE /* qm_chroma.n3 in Resources */,
 				B7E4DDA111B8027700C787FE /* adb_chroma.n3 in Resources */,
+				B739033611B93E8800F5B75C /* football-icon.png in Resources */,
+				B739034711B9400100F5B75C /* CAMUS.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
