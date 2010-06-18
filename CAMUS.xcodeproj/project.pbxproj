@@ -17,11 +17,25 @@
 		B7000BFB1180B06800C3DAEC /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF71180B06800C3DAEC /* Play.tiff */; };
 		B7000BFC1180B06800C3DAEC /* Spotlight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF81180B06800C3DAEC /* Spotlight.tiff */; };
 		B7000BFD1180B06800C3DAEC /* Stop.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7000BF91180B06800C3DAEC /* Stop.tiff */; };
+		B714F25911C7E24A000F1B0B /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B714F25511C7E24A000F1B0B /* libaudioDB.0.0.dylib */; };
+		B714F25D11C7E273000F1B0B /* libraptor.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B714F25611C7E24A000F1B0B /* libraptor.1.dylib */; };
+		B714F25E11C7E273000F1B0B /* librasqal.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B714F25711C7E24A000F1B0B /* librasqal.2.dylib */; };
+		B714F25F11C7E273000F1B0B /* librdf.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B714F25811C7E24A000F1B0B /* librdf.0.dylib */; };
+		B714F27811C7E714000F1B0B /* libaudioDB.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B78FF7A511B9635400376620 /* libaudioDB.0.0.dylib */; };
+		B732B6F111C92DF00059F3CC /* libvamp-sdk.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B732B6EF11C92DCB0059F3CC /* libvamp-sdk.dylib */; };
 		B739033611B93E8800F5B75C /* football-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B739033511B93E8800F5B75C /* football-icon.png */; };
 		B739034711B9400100F5B75C /* CAMUS.icns in Resources */ = {isa = PBXBuildFile; fileRef = B739034611B9400100F5B75C /* CAMUS.icns */; };
 		B78FC0BC11AD9B7F0079400F /* sonic-annotator in Copy Executables */ = {isa = PBXBuildFile; fileRef = B78FC0BB11AD9B7F0079400F /* sonic-annotator */; };
+		B7C0623311C10DDD008921C6 /* vamp-audiodb-plugins.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7C0622D11C10DDD008921C6 /* vamp-audiodb-plugins.n3 */; };
+		B7C0623411C10DDD008921C6 /* vamp-libxtract.cat in Resources */ = {isa = PBXBuildFile; fileRef = B7C0622E11C10DDD008921C6 /* vamp-libxtract.cat */; };
+		B7C0623611C10DDD008921C6 /* vamp-libxtract.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7C0623011C10DDD008921C6 /* vamp-libxtract.n3 */; };
+		B7C0623811C10E03008921C6 /* qm-vamp-plugins.dylib in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0622B11C10DDD008921C6 /* qm-vamp-plugins.dylib */; };
+		B7C0623911C10E03008921C6 /* vamp-audiodb-plugins.dylib in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0622C11C10DDD008921C6 /* vamp-audiodb-plugins.dylib */; };
+		B7C0623A11C10E03008921C6 /* vamp-audiodb-plugins.n3 in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0622D11C10DDD008921C6 /* vamp-audiodb-plugins.n3 */; };
+		B7C0623B11C10E03008921C6 /* vamp-libxtract.cat in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0622E11C10DDD008921C6 /* vamp-libxtract.cat */; };
+		B7C0623C11C10E03008921C6 /* vamp-libxtract.dylib in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0622F11C10DDD008921C6 /* vamp-libxtract.dylib */; };
+		B7C0623D11C10E03008921C6 /* vamp-libxtract.n3 in Copy Vamp Plugins */ = {isa = PBXBuildFile; fileRef = B7C0623011C10DDD008921C6 /* vamp-libxtract.n3 */; };
 		B7CBF33211105F1700B8C1C8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7CBF33111105F1700B8C1C8 /* AppController.m */; };
-		B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
 		B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */; };
 		B7E4DD9E11B8027700C787FE /* qm_mfcc.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */; };
 		B7E4DD9F11B8027700C787FE /* adb_cq.n3 in Resources */ = {isa = PBXBuildFile; fileRef = B7E4DD9B11B8027700C787FE /* adb_cq.n3 */; };
@@ -31,12 +45,27 @@
 		B7E4DDA311B8027F00C787FE /* adb_cq.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9B11B8027700C787FE /* adb_cq.n3 */; };
 		B7E4DDA411B8027F00C787FE /* qm_chroma.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */; };
 		B7E4DDA511B8027F00C787FE /* adb_chroma.n3 in Copy rdf */ = {isa = PBXBuildFile; fileRef = B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */; };
-		B7F5911D11AD88A20037F299 /* libaudioDB.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */; };
 		B7F5914711AD98D40037F299 /* populate in Copy Executables */ = {isa = PBXBuildFile; fileRef = B7F5914611AD98D40037F299 /* populate */; };
 		B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B7C061FF11C103E4008921C6 /* Copy Vamp Plugins */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Vamp;
+			dstSubfolderSpec = 7;
+			files = (
+				B7C0623811C10E03008921C6 /* qm-vamp-plugins.dylib in Copy Vamp Plugins */,
+				B7C0623911C10E03008921C6 /* vamp-audiodb-plugins.dylib in Copy Vamp Plugins */,
+				B7C0623A11C10E03008921C6 /* vamp-audiodb-plugins.n3 in Copy Vamp Plugins */,
+				B7C0623B11C10E03008921C6 /* vamp-libxtract.cat in Copy Vamp Plugins */,
+				B7C0623C11C10E03008921C6 /* vamp-libxtract.dylib in Copy Vamp Plugins */,
+				B7C0623D11C10E03008921C6 /* vamp-libxtract.n3 in Copy Vamp Plugins */,
+			);
+			name = "Copy Vamp Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7CBF42111108E6100B8C1C8 /* Copy BWToolkit Bits */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,7 +97,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7F5911D11AD88A20037F299 /* libaudioDB.0.0.dylib in CopyFiles */,
+				B714F27811C7E714000F1B0B /* libaudioDB.0.0.dylib in CopyFiles */,
+				B732B6F111C92DF00059F3CC /* libvamp-sdk.dylib in CopyFiles */,
+				B714F25D11C7E273000F1B0B /* libraptor.1.dylib in CopyFiles */,
+				B714F25E11C7E273000F1B0B /* librasqal.2.dylib in CopyFiles */,
+				B714F25F11C7E273000F1B0B /* librdf.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,19 +134,30 @@
 		B7000BF71180B06800C3DAEC /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Play.tiff; sourceTree = "<group>"; };
 		B7000BF81180B06800C3DAEC /* Spotlight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Spotlight.tiff; sourceTree = "<group>"; };
 		B7000BF91180B06800C3DAEC /* Stop.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Stop.tiff; sourceTree = "<group>"; };
+		B714F25511C7E24A000F1B0B /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = libraries/libaudioDB.0.0.dylib; sourceTree = "<group>"; };
+		B714F25611C7E24A000F1B0B /* libraptor.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libraptor.1.dylib; path = libraries/libraptor.1.dylib; sourceTree = "<group>"; };
+		B714F25711C7E24A000F1B0B /* librasqal.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = librasqal.2.dylib; path = libraries/librasqal.2.dylib; sourceTree = "<group>"; };
+		B714F25811C7E24A000F1B0B /* librdf.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = librdf.0.dylib; path = libraries/librdf.0.dylib; sourceTree = "<group>"; };
+		B732B6EF11C92DCB0059F3CC /* libvamp-sdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libvamp-sdk.dylib"; path = "libraries/libvamp-sdk.dylib"; sourceTree = "<group>"; };
 		B739033511B93E8800F5B75C /* football-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "football-icon.png"; sourceTree = "<group>"; };
 		B739034611B9400100F5B75C /* CAMUS.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = CAMUS.icns; sourceTree = "<group>"; };
 		B754912911B80A0A0004A248 /* CAMUS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMUS_Prefix.pch; sourceTree = "<group>"; };
 		B78FC0BB11AD9B7F0079400F /* sonic-annotator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = "sonic-annotator"; path = "binaries/sonic-annotator"; sourceTree = "<group>"; };
+		B78FF7A511B9635400376620 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaudioDB.0.0.dylib; sourceTree = "<group>"; };
+		B7C0622B11C10DDD008921C6 /* qm-vamp-plugins.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "qm-vamp-plugins.dylib"; path = "plugins/qm-vamp-plugins.dylib"; sourceTree = "<group>"; };
+		B7C0622C11C10DDD008921C6 /* vamp-audiodb-plugins.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "vamp-audiodb-plugins.dylib"; path = "plugins/vamp-audiodb-plugins.dylib"; sourceTree = "<group>"; };
+		B7C0622D11C10DDD008921C6 /* vamp-audiodb-plugins.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "vamp-audiodb-plugins.n3"; path = "plugins/vamp-audiodb-plugins.n3"; sourceTree = "<group>"; };
+		B7C0622E11C10DDD008921C6 /* vamp-libxtract.cat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "vamp-libxtract.cat"; path = "plugins/vamp-libxtract.cat"; sourceTree = "<group>"; };
+		B7C0622F11C10DDD008921C6 /* vamp-libxtract.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "vamp-libxtract.dylib"; path = "plugins/vamp-libxtract.dylib"; sourceTree = "<group>"; };
+		B7C0623011C10DDD008921C6 /* vamp-libxtract.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "vamp-libxtract.n3"; path = "plugins/vamp-libxtract.n3"; sourceTree = "<group>"; };
 		B7CBF33011105F1700B8C1C8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		B7CBF33111105F1700B8C1C8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
-		B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaudioDB.0.0.dylib; path = /usr/local/lib/libaudioDB.0.0.dylib; sourceTree = "<absolute>"; };
 		B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BWToolkitFramework.framework; sourceTree = "<group>"; };
 		B7E4DD9A11B8027700C787FE /* qm_mfcc.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = qm_mfcc.n3; path = rdf/qm_mfcc.n3; sourceTree = "<group>"; };
 		B7E4DD9B11B8027700C787FE /* adb_cq.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = adb_cq.n3; path = rdf/adb_cq.n3; sourceTree = "<group>"; };
 		B7E4DD9C11B8027700C787FE /* qm_chroma.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = qm_chroma.n3; path = rdf/qm_chroma.n3; sourceTree = "<group>"; };
 		B7E4DD9D11B8027700C787FE /* adb_chroma.n3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = adb_chroma.n3; path = rdf/adb_chroma.n3; sourceTree = "<group>"; };
-		B7F5914611AD98D40037F299 /* populate */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = populate; sourceTree = "<group>"; };
+		B7F5914611AD98D40037F299 /* populate */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = populate; path = binaries/populate; sourceTree = "<group>"; };
 		B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -122,11 +166,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7CBF3B711106F4C00B8C1C8 /* libaudioDB.0.0.dylib in Frameworks */,
 				B7000BA71180AE2B00C3DAEC /* BWToolkitFramework.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B7E0FD5B114164430003AB08 /* BWToolkitFramework.framework in Frameworks */,
 				B7F9D0151189EFAA0023FEBF /* AudioToolbox.framework in Frameworks */,
+				B714F25911C7E24A000F1B0B /* libaudioDB.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,8 +215,8 @@
 		29B97314FDCFA39411CA2CEA /* CAMUS */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0624A11C135AB008921C6 /* libs */,
 				B7000BA61180AE2B00C3DAEC /* BWToolkitFramework.framework */,
-				B7CBF3B611106F4C00B8C1C8 /* libaudioDB.0.0.dylib */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -194,6 +238,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0621411C106E9008921C6 /* Vamp */,
 				B7E4DDAD11B8029F00C787FE /* binaries */,
 				B7E4DDAC11B8029300C787FE /* rdf */,
 				B7000BF51180B06800C3DAEC /* icons */,
@@ -207,6 +252,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B78FF7A511B9635400376620 /* libaudioDB.0.0.dylib */,
 				B7F9D0141189EFAA0023FEBF /* AudioToolbox.framework */,
 				B7E0FD5A114164430003AB08 /* BWToolkitFramework.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
@@ -226,6 +272,31 @@
 				B7000BF91180B06800C3DAEC /* Stop.tiff */,
 			);
 			path = icons;
+			sourceTree = "<group>";
+		};
+		B7C0621411C106E9008921C6 /* Vamp */ = {
+			isa = PBXGroup;
+			children = (
+				B7C0622B11C10DDD008921C6 /* qm-vamp-plugins.dylib */,
+				B7C0622C11C10DDD008921C6 /* vamp-audiodb-plugins.dylib */,
+				B7C0622D11C10DDD008921C6 /* vamp-audiodb-plugins.n3 */,
+				B7C0622E11C10DDD008921C6 /* vamp-libxtract.cat */,
+				B7C0622F11C10DDD008921C6 /* vamp-libxtract.dylib */,
+				B7C0623011C10DDD008921C6 /* vamp-libxtract.n3 */,
+			);
+			name = Vamp;
+			sourceTree = "<group>";
+		};
+		B7C0624A11C135AB008921C6 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				B732B6EF11C92DCB0059F3CC /* libvamp-sdk.dylib */,
+				B714F25511C7E24A000F1B0B /* libaudioDB.0.0.dylib */,
+				B714F25611C7E24A000F1B0B /* libraptor.1.dylib */,
+				B714F25711C7E24A000F1B0B /* librasqal.2.dylib */,
+				B714F25811C7E24A000F1B0B /* librdf.0.dylib */,
+			);
+			name = libs;
 			sourceTree = "<group>";
 		};
 		B7E4DDAC11B8029300C787FE /* rdf */ = {
@@ -262,6 +333,8 @@
 				B7F5911F11AD88B20037F299 /* CopyFiles */,
 				B7F5914511AD98B20037F299 /* Copy Executables */,
 				B7E4DD9911B801F900C787FE /* Copy rdf */,
+				B7C061FF11C103E4008921C6 /* Copy Vamp Plugins */,
+				B714F28211C7EC48000F1B0B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -307,10 +380,29 @@
 				B7E4DDA111B8027700C787FE /* adb_chroma.n3 in Resources */,
 				B739033611B93E8800F5B75C /* football-icon.png in Resources */,
 				B739034711B9400100F5B75C /* CAMUS.icns in Resources */,
+				B7C0623311C10DDD008921C6 /* vamp-audiodb-plugins.n3 in Resources */,
+				B7C0623411C10DDD008921C6 /* vamp-libxtract.cat in Resources */,
+				B7C0623611C10DDD008921C6 /* vamp-libxtract.n3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B714F28211C7EC48000F1B0B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -change libaudioDB.0.0.dylib @loader_path/../Frameworks/libaudioDB.0.0.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -362,6 +454,16 @@
 				GCC_PREFIX_HEADER = CAMUS_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					/opt/local/lib,
+					"\"$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/Vamp\"",
+					"\"$(SRCROOT)/plugins\"",
+					"\"$(SRCROOT)/nec_lib\"",
+					"\"$(SRCROOT)/nec_lib_2\"",
+					"\"$(SRCROOT)/libraries\"",
+				);
 				PRODUCT_NAME = CAMUS;
 			};
 			name = Debug;
@@ -382,7 +484,16 @@
 				HEADER_SEARCH_PATHS = "/usr/local/include//**";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib//**";
+				LIBRARY_SEARCH_PATHS = (
+					"/usr/local/lib//**",
+					"\"$(SRCROOT)\"",
+					/opt/local/lib,
+					"\"$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/Vamp\"",
+					"\"$(SRCROOT)/plugins\"",
+					"\"$(SRCROOT)/nec_lib\"",
+					"\"$(SRCROOT)/nec_lib_2\"",
+					"\"$(SRCROOT)/libraries\"",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = CAMUS;
 				USER_HEADER_SEARCH_PATHS = "/usr/local//**";

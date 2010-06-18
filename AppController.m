@@ -61,6 +61,8 @@
 	[self cancelCreate:self];
 	
 	NSSavePanel* panel = [NSSavePanel savePanel];
+	[panel setCanSelectHiddenExtension:YES];
+	[panel setAllowedFileTypes:[NSArray arrayWithObjects:@"adb", nil]];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@""];
 	 
 	[results removeAllObjects];
@@ -93,8 +95,10 @@
 		}
 		
 		// Calculate the max DB size
-		int vectors = ceil([maxLengthField doubleValue] / (([hopSizeField doubleValue] / 1000) * 44100.0f));
-		NSLog(@"Vectors: %d", vectors);
+		NSLog(@"Max length: %f", [maxLengthField doubleValue]);
+		NSLog(@"hop size: %f", [hopSizeField doubleValue]);
+		int vectors = ceil([maxLengthField doubleValue] / (([hopSizeField doubleValue] / 1000.0f)));
+		NSLog(@"Max Vectors: %d", vectors);
 		int numtracks = [maxTracksField intValue];
 		int datasize = ceil((numtracks * vectors * dim * 8.0f) / 1024.0f / 1024.0f); // In MB
 		
@@ -307,9 +311,19 @@
 	
 	// Extract features with sonic-annotator
 	NSTask* task = [[NSTask alloc] init];
-	
+	NSLog(@"Resource path: %@", [ [NSBundle mainBundle] resourcePath]);
+	NSString* pluginPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Vamp"];
 	NSString* extractPath = [ [ NSBundle mainBundle ] pathForAuxiliaryExecutable: @"sonic-annotator" ];
+	
+	NSLog(@"Plugin path: %@", pluginPath);
+	
+	NSDictionary *defaultEnvironment = [[NSProcessInfo processInfo] environment];
+    NSMutableDictionary *environment = [[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment];
+	[environment setValue:pluginPath forKey:@"VAMP_PATH"];
+	NSLog(@"Env: %@", environment);
 	[task setLaunchPath:extractPath];
+	[task setEnvironment:environment];
+	
 	
 	NSArray* args;
 	args = [NSArray arrayWithObjects:@"-t", n3FileName, @"-w", @"rdf", @"-r", @"--rdf-network", @"--rdf-one-file", featuresFileName, @"--rdf-force", filename, nil];
