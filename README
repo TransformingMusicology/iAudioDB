@@ -1,0 +1,4 @@
+Requirements:
+
+* CAMUS requires BWToolkit, which was not included for space reasons. It is freely available at http://brandonwalkin.com/bwtoolkit/. The BWToolkitFramework.framework file should be placed into this folder prior to recompilation. 
+* All other libraries are included, with their binaries patched to allow for their bundling within the CAMUS application. 
