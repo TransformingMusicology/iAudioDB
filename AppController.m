@@ -395,7 +395,7 @@
 {
 	[tracksView reloadData];
 	
-	NSArray *fileTypes = [NSArray arrayWithObject:@"wav"];
+	NSArray *fileTypes = [NSArray arrayWithObjects:@"wav", @"mp3", @"aiff", @"m4a", nil];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	[panel setAllowsMultipleSelection:TRUE];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
@@ -645,7 +645,7 @@
 
 -(IBAction)selectQueryFile:(id)sender
 {
-	NSArray* fileTypes = [NSArray arrayWithObject:@"wav"];
+	NSArray* fileTypes = [NSArray arrayWithObjects: @"wav", @"mp3", @"aiff",@"m4a", nil];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
