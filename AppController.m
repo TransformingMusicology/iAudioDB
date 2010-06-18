@@ -104,14 +104,50 @@
 		
 		[self reset];
 		 
-		// Create new db, and set flags.
-		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], datasize, numtracks, dim);
-		audiodb_l2norm(db);
-			 
+		
+		
 		// Store useful paths.
 		dbName = [[[panel URL] relativePath] retain];
 		dbFilename = [[panel filename] retain];
 		plistFilename = [[NSString stringWithFormat:@"%@.plist", [dbFilename stringByDeletingPathExtension]] retain];
+		
+		// Remove any existing files
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		
+		BOOL overwriteError = NO;
+		
+		if([fileManager fileExistsAtPath:[panel filename]])
+		{
+			if(![fileManager removeItemAtPath:[panel filename] error:NULL])
+			{
+				overwriteError = YES;
+			}
+		}
+		
+		if(!overwriteError && [fileManager fileExistsAtPath:plistFilename])
+		{
+			if(![fileManager removeItemAtPath:plistFilename error:NULL])
+			{
+				overwriteError = YES;
+			}
+		}
+		[fileManager release];
+		
+		if(overwriteError)
+		{
+			NSAlert *alert = [[NSAlert alloc] init];
+			[alert addButtonWithTitle:@"OK"];
+			[alert setMessageText:@"Unable to create database."];
+			[alert setInformativeText:@"A database with this name already exists, and could not be overwritten."];
+			[alert setAlertStyle:NSWarningAlertStyle];
+			[alert runModal];
+			[alert release];
+			return;
+		}
+		
+		// Create new db, and set flags.
+		db = audiodb_create([[panel filename] cStringUsingEncoding:NSUTF8StringEncoding], datasize, numtracks, dim);
+		audiodb_l2norm(db);
 			
 		// Create the plist file (contains mapping from filename to key).
 		dbState = [[NSMutableDictionary alloc] init];
