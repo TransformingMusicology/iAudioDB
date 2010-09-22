@@ -62,7 +62,7 @@
 	
 	NSSavePanel* panel = [NSSavePanel savePanel];
 	[panel setCanSelectHiddenExtension:YES];
-	[panel setAllowedFileTypes:[NSArray arrayWithObjects:@"adb", nil]];
+	[panel setAllowedFileTypes:[NSArray arrayWithObject:@"adb"]];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@""];
 	 
 	[results removeAllObjects];
@@ -201,6 +201,9 @@
 	[queryStartVectors setEnabled:NO];
 	[resetButton setEnabled:NO];
 	[multipleCheckBox setEnabled:NO];
+	
+	[playBothButton setEnabled:NO];
+	[playResultButton setEnabled:NO];
 }
 
 /**
@@ -395,7 +398,7 @@
 {
 	[tracksView reloadData];
 	
-	NSArray *fileTypes = [NSArray arrayWithObjects:@"wav", @"mp3", @"aiff", @"m4a", nil];
+	NSArray *fileTypes = [NSArray arrayWithObjects:@"wav", @"mp3", @"aif", @"aiff", @"m4a",nil];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	[panel setAllowsMultipleSelection:TRUE];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
@@ -485,6 +488,24 @@
 			return NO;
 		}
 	}
+	else if(theAction == @selector(playBoth:) || theAction == @selector(playResult:))
+	{
+		if([tracksView numberOfSelectedRows] == 0)
+		{
+			return NO;
+		}
+		else
+		{
+			return YES;
+		}
+	}
+	else if(theAction == @selector(stopPlay:))
+	{
+		return NO;
+	}
+	
+	NSLog(@"Returning yes for %@", NSStringFromSelector(theAction));
+	
 	return YES;
 }
 
@@ -493,6 +514,7 @@
  */
 -(IBAction)selectedChanged:(id)sender
 {
+	NSLog(@"Selection changed");
 	if([tracksView numberOfSelectedRows] == 0)
 	{
 		[playBothButton setEnabled:NO];
@@ -645,7 +667,7 @@
 
 -(IBAction)selectQueryFile:(id)sender
 {
-	NSArray* fileTypes = [NSArray arrayWithObjects: @"wav", @"mp3", @"aiff",@"m4a", nil];
+	NSArray* fileTypes = [NSArray arrayWithObjects: @"wav", @"mp3", @"aif", @"aiff", @"m4a",  nil];
 	NSOpenPanel* panel = [NSOpenPanel openPanel];
 	NSInteger response = [panel runModalForDirectory:NSHomeDirectory() file:@"" types:fileTypes];
 	if(response == NSFileHandlingPanelOKButton)
@@ -838,7 +860,7 @@
 	if(ok == 0)
 	{
 		
-		float hopSize = [[dbState objectForKey:@"hopsize"] floatValue];
+	//	float hopSize = [[dbState objectForKey:@"hopsize"] floatValue];
 		NSLog(@"Got a datum");
 		result = audiodb_query_spec(db, spec);
 		if(result == NULL)
@@ -863,7 +885,6 @@
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"distance"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].dist] forKey:@"meter"];
 				[dict setValue:[NSNumber numberWithFloat:result->results[i].ipos/divisor] forKey:@"ipos"];
-				NSLog(@"%s ipos: %d, dist: %f", result->results[i].ikey,result->results[i].ipos, result->results[i].dist);
 				[results addObject: dict];
 			}
 		}
